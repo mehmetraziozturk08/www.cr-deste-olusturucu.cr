@@ -538,29 +538,27 @@
             { id: 7, name: "Usta Atölyesi", trophies: 1700 },
             { id: 8, name: "Kraliyet Arenası", trophies: 2000 },
             { id: 9, name: "Buzlu Zirve", trophies: 2300 },
-            { id: 10, name: "Cengel Arenası", trophies: 2600 },
+            { id: 10, name: "Çengel Arenası", trophies: 2600 },
             { id: 11, name: "Domuz Dağı", trophies: 3000 },
             { id: 12, name: "Elektrik Vadisi", trophies: 3400 },
             { id: 13, name: "Korku Kasabası", trophies: 3800 },
             { id: 14, name: "Haydudakı Sığınağı", trophies: 4000 }
         ];
 
-        // Gerçek Clash Royale kartları
+        // Gerçek Clash Royale kartları (Türkçe isimlerle ve tekrarsız)
         const cards = [
             // Common cards
-            { id: 1, name: "Oklar", cost: 3, type: "spell", rarity: "common", arena: 1, image: "arrows" },
+            { id: 1, name: "Ok", cost: 3, type: "spell", rarity: "common", arena: 1, image: "arrows" },
             { id: 2, name: "Okçular", cost: 3, type: "troop", rarity: "common", arena: 1, image: "archers" },
-            { id: 3, name: "Bebek Ejderha", cost: 4, type: "troop", rarity: "common", arena: 2, image: "baby-dragon" },
+            { id: 3, name: "Bebek Ejder", cost: 4, type: "troop", rarity: "common", arena: 2, image: "baby-dragon" },
             { id: 4, name: "Yarasalar", cost: 2, type: "troop", rarity: "common", arena: 8, image: "bats" },
             { id: 5, name: "Bombacı", cost: 2, type: "troop", rarity: "common", arena: 1, image: "bomber" },
             { id: 6, name: "Top", cost: 3, type: "building", rarity: "common", arena: 1, image: "cannon" },
             { id: 7, name: "Ateş Topu", cost: 4, type: "spell", rarity: "common", arena: 1, image: "fireball" },
             { id: 8, name: "Dev", cost: 5, type: "troop", rarity: "common", arena: 1, image: "giant" },
-            { id: 9, name: "Goblin", cost: 1, type: "troop", rarity: "common", arena: 1, image: "goblin" },
             { id: 10, name: "Goblin Fıçısı", cost: 3, type: "spell", rarity: "common", arena: 1, image: "goblin-barrel" },
             { id: 11, name: "Goblinler", cost: 2, type: "troop", rarity: "common", arena: 1, image: "goblins" },
             { id: 12, name: "Şövalye", cost: 3, type: "troop", rarity: "common", arena: 1, image: "knight" },
-            { id: 13, name: "Minyon", cost: 3, type: "troop", rarity: "common", arena: 1, image: "minion" },
             { id: 14, name: "Minyonlar", cost: 3, type: "troop", rarity: "common", arena: 1, image: "minions" },
             { id: 15, name: "Tüfekçi", cost: 4, type: "troop", rarity: "common", arena: 1, image: "musketeer" },
             { id: 16, name: "Öfke", cost: 2, type: "spell", rarity: "common", arena: 2, image: "rage" },
@@ -576,7 +574,7 @@
             { id: 24, name: "Barbarlar", cost: 5, type: "troop", rarity: "rare", arena: 2, image: "barbarians" },
             { id: 25, name: "Bombacı Kule", cost: 4, type: "building", rarity: "rare", arena: 3, image: "bomb-tower" },
             { id: 26, name: "Karanlık Prens", cost: 4, type: "troop", rarity: "rare", arena: 7, image: "dark-prince" },
-            { id: 27, name: "Eliksir Toplayıcı", cost: 6, type: "building", rarity: "rare", arena: 5, image: "elixir-collector" },
+            { id: 27, name: "İksir Toplayıcı", cost: 6, type: "building", rarity: "rare", arena: 5, image: "elixir-collector" },
             { id: 28, name: "Fırın", cost: 4, type: "building", rarity: "rare", arena: 6, image: "furnace" },
             { id: 29, name: "Dev İskelet", cost: 6, type: "troop", rarity: "rare", arena: 4, image: "giant-skeleton" },
             { id: 30, name: "Goblin Kulübesi", cost: 5, type: "building", rarity: "rare", arena: 3, image: "goblin-hut" },
@@ -586,11 +584,10 @@
             { id: 34, name: "Mini P.E.K.K.A", cost: 4, type: "troop", rarity: "rare", arena: 3, image: "mini-pekka" },
             { id: 35, name: "Ayna", cost: 1, type: "spell", rarity: "rare", arena: 5, image: "mirror" },
             { id: 36, name: "Prens", cost: 5, type: "troop", rarity: "rare", arena: 4, image: "prince" },
-            { id: 37, name: "Haydudak", cost: 5, type: "troop", rarity: "rare", arena: 12, image: "rascal" },
             { id: 38, name: "Roket", cost: 6, type: "spell", rarity: "rare", arena: 3, image: "rocket" },
             { id: 39, name: "Kraliyet Devi", cost: 6, type: "troop", rarity: "rare", arena: 7, image: "royal-giant" },
             { id: 40, name: "Tesla", cost: 4, type: "building", rarity: "rare", arena: 4, image: "tesla" },
-            { id: 41, name: "Kütük", cost: 2, type: "spell", rarity: "rare", arena: 6, image: "the-log" },
+            { id: 41, name: "Tomruk", cost: 2, type: "spell", rarity: "rare", arena: 6, image: "the-log" },
             { id: 42, name: "Kasırga", cost: 3, type: "spell", rarity: "rare", arena: 9, image: "tornado" },
             { id: 43, name: "X-Oku", cost: 6, type: "building", rarity: "rare", arena: 6, image: "x-bow" },
             { id: 44, name: "Zehir", cost: 4, type: "spell", rarity: "rare", arena: 5, image: "poison" },
@@ -618,7 +615,7 @@
             { id: 64, name: "Gece Cadısı", cost: 4, type: "troop", rarity: "epic", arena: 10, image: "night-witch" },
             { id: 65, name: "P.E.K.K.A", cost: 7, type: "troop", rarity: "epic", arena: 6, image: "pekka" },
             { id: 66, name: "Kraliyet Hayaleti", cost: 3, type: "troop", rarity: "epic", arena: 11, image: "royal-ghost" },
-            { id: 67, name: "Sparkey", cost: 6, type: "troop", rarity: "epic", arena: 8, image: "sparky" },
+            { id: 67, name: "Kıvılcım", cost: 6, type: "troop", rarity: "epic", arena: 8, image: "sparky" },
             { id: 68, name: "Duvar Yıkıcılar", cost: 2, type: "troop", rarity: "epic", arena: 9, image: "wall-breakers" },
             { id: 69, name: "Cadı", cost: 5, type: "troop", rarity: "epic", arena: 3, image: "witch" },
             { id: 70, name: "Balon", cost: 5, type: "troop", rarity: "epic", arena: 4, image: "balloon" },
@@ -635,14 +632,12 @@
             { id: 79, name: "Havan", cost: 4, type: "building", rarity: "legendary", arena: 6, image: "mortar" },
             { id: 80, name: "Prenses", cost: 3, type: "troop", rarity: "legendary", arena: 7, image: "princess" },
             { id: 81, name: "Kraliyet Hayaleti", cost: 3, type: "troop", rarity: "legendary", arena: 10, image: "royal-ghost" },
-            { id: 82, name: "Altın Şövalye", cost: 4, type: "troop", rarity: "legendary", arena: 13, image: "golden-knight" },
-            { id: 83, name: "Koç Sürücüsü", cost: 5, type: "troop", rarity: "legendary", arena: 12, image: "ram-rider" },
-            { id: 84, name: "İskelet Kralı", cost: 4, type: "troop", rarity: "legendary", arena: 14, image: "skeleton-king" },
+            { id: 82, name: "Koç Sürücüsü", cost: 5, type: "troop", rarity: "legendary", arena: 12, image: "ram-rider" },
             
             // Champion cards
-            { id: 85, name: "Okçu Kraliçe", cost: 5, type: "troop", rarity: "champion", arena: 14, image: "archer-queen" },
-            { id: 86, name: "Altın Şövalye", cost: 4, type: "troop", rarity: "champion", arena: 13, image: "golden-knight" },
-            { id: 87, name: "İskelet Kralı", cost: 4, type: "troop", rarity: "champion", arena: 14, image: "skeleton-king" }
+            { id: 83, name: "Okçu Kraliçe", cost: 5, type: "troop", rarity: "champion", arena: 14, image: "archer-queen" },
+            { id: 84, name: "Altın Şövalye", cost: 4, type: "troop", rarity: "champion", arena: 13, image: "golden-knight" },
+            { id: 85, name: "İskelet Kralı", cost: 4, type: "troop", rarity: "champion", arena: 14, image: "skeleton-king" }
         ];
 
         // 100+ Genişletilmiş Meta Deck Veritabanı
@@ -658,8 +653,8 @@
                 synergies: ["Madenci + Zehir", "Zehir + Cehennem Kulesi", "Madenci + Buz Ruhu"],
                 decks: [
                     { arena: 7, cards: ["Madenci", "Zehir", "Cehennem Kulesi", "Buz Ruhu", "İskeletler", "Şok", "Mızrak Goblinleri", "Şövalye"] },
-                    { arena: 9, cards: ["Madenci", "Zehir", "Cehennem Kulesi", "Buz Ruhu", "Yarasalar", "Şok", "Kütük", "Valküre"] },
-                    { arena: 11, cards: ["Madenci", "Zehir", "Cehennem Kulesi", "Buz Ruhu", "Yarasalar", "Şok", "Kütük", "Elektrik Büyücüsü"] }
+                    { arena: 9, cards: ["Madenci", "Zehir", "Cehennem Kulesi", "Buz Ruhu", "Yarasalar", "Şok", "Tomruk", "Valküre"] },
+                    { arena: 11, cards: ["Madenci", "Zehir", "Cehennem Kulesi", "Buz Ruhu", "Yarasalar", "Şok", "Tomruk", "Elektrik Büyücüsü"] }
                 ]
             },
             minerWallBreakers: {
@@ -672,8 +667,8 @@
                 synergies: ["Madenci + Duvar Yıkıcılar", "Duvar Yıkıcılar + Zehir", "Madenci + Buz Ruhu"],
                 decks: [
                     { arena: 9, cards: ["Madenci", "Duvar Yıkıcılar", "Zehir", "Buz Ruhu", "İskeletler", "Şok", "Mızrak Goblinleri", "Şövalye"] },
-                    { arena: 11, cards: ["Madenci", "Duvar Yıkıcılar", "Zehir", "Buz Ruhu", "Yarasalar", "Şok", "Kütük", "Valküre"] },
-                    { arena: 13, cards: ["Madenci", "Duvar Yıkıcılar", "Zehir", "Buz Ruhu", "Yarasalar", "Şok", "Kütük", "Elektrik Büyücüsü"] }
+                    { arena: 11, cards: ["Madenci", "Duvar Yıkıcılar", "Zehir", "Buz Ruhu", "Yarasalar", "Şok", "Tomruk", "Valküre"] },
+                    { arena: 13, cards: ["Madenci", "Duvar Yıkıcılar", "Zehir", "Buz Ruhu", "Yarasalar", "Şok", "Tomruk", "Elektrik Büyücüsü"] }
                 ]
             },
             minerControl: {
@@ -693,16 +688,16 @@
             // HOG CYCLE DECK'LERİ
             hogCycle: {
                 name: "Hog Cycle",
-                description: "Hızlı elixir döngüsü ile sürekli baskı kuran agresif deck",
-                keyCards: ["Domuz Sürücüsü", "Buz Ruhu", "Kütük", "Top"],
+                description: "Hızlı iksir döngüsü ile sürekli baskı kuran agresif deck",
+                keyCards: ["Domuz Sürücüsü", "Buz Ruhu", "Tomruk", "Top"],
                 averageElixir: 3.2,
                 difficulty: "medium",
-                strategy: "Domuz Sürücüsü ile sürekli kule baskısı yapın. Elixiri düşük kartlarla savunma yaparak elixir avantajı sağlayın. Kütük ile küçük birlikleri temizleyin.",
+                strategy: "Domuz Sürücüsü ile sürekli kule baskısı yapın. İksiri düşük kartlarla savunma yaparak iksir avantajı sağlayın. Tomruk ile küçük birlikleri temizleyin.",
                 synergies: ["Domuz Sürücüsü + Buz Ruhu", "Top + Şok", "Buz Ruhu + İskeletler"],
                 decks: [
-                    { arena: 4, cards: ["Domuz Sürücüsü", "Buz Ruhu", "Kütük", "Top", "İskeletler", "Şok", "Ateş Topu", "Tüfekçi"] },
-                    { arena: 6, cards: ["Domuz Sürücüsü", "Buz Ruhu", "Kütük", "Top", "İskeletler", "Şok", "Ateş Topu", "Buz Büyücüsü"] },
-                    { arena: 8, cards: ["Domuz Sürücüsü", "Buz Ruhu", "Kütük", "Tesla", "Yarasalar", "Şok", "Ateş Topu", "Tüfekçi"] }
+                    { arena: 4, cards: ["Domuz Sürücüsü", "Buz Ruhu", "Tomruk", "Top", "İskeletler", "Şok", "Ateş Topu", "Tüfekçi"] },
+                    { arena: 6, cards: ["Domuz Sürücüsü", "Buz Ruhu", "Tomruk", "Top", "İskeletler", "Şok", "Ateş Topu", "Buz Büyücüsü"] },
+                    { arena: 8, cards: ["Domuz Sürücüsü", "Buz Ruhu", "Tomruk", "Tesla", "Yarasalar", "Şok", "Ateş Topu", "Tüfekçi"] }
                 ]
             },
             hogIceSpirit: {
@@ -715,23 +710,23 @@
                 synergies: ["Domuz Sürücüsü + Buz Ruhu", "Buz Ruhu + Şok", "Domuz Sürücüsü + İskeletler"],
                 decks: [
                     { arena: 8, cards: ["Domuz Sürücüsü", "Buz Ruhu", "Şok", "İskeletler", "Mızrak Goblinleri", "Top", "Tesla", "Şövalye"] },
-                    { arena: 10, cards: ["Domuz Sürücüsü", "Buz Ruhu", "Şok", "İskeletler", "Mızrak Goblinleri", "Kütük", "Tesla", "Valküre"] },
-                    { arena: 12, cards: ["Domuz Sürücüsü", "Buz Ruhu", "Şok", "İskeletler", "Mızrak Goblinleri", "Kütük", "Tesla", "Elektrik Büyücüsü"] }
+                    { arena: 10, cards: ["Domuz Sürücüsü", "Buz Ruhu", "Şok", "İskeletler", "Mızrak Goblinleri", "Tomruk", "Tesla", "Valküre"] },
+                    { arena: 12, cards: ["Domuz Sürücüsü", "Buz Ruhu", "Şok", "İskeletler", "Mızrak Goblinleri", "Tomruk", "Tesla", "Elektrik Büyücüsü"] }
                 ]
             },
             // LOG BAIT DECK'LERİ
             logBait: {
-                name: "Kütük Tuzak",
-                description: "Rakibin Kütük kullanmasını zorlaştıran ve buna karşı avantaj sağlayan deck",
+                name: "Tomruk Tuzak",
+                description: "Rakibin Tomruk kullanmasını zorlaştıran ve buna karşı avantaj sağlayan deck",
                 keyCards: ["Goblin Fıçısı", "Prenses", "Şövalye", "Cehennem Kulesi"],
                 averageElixir: 3.3,
                 difficulty: "medium",
-                strategy: "Goblin Fıçısı ile sürekli baskı yapın. Prenses ile hava savunması yapın. Rakip Kütük kullandığında Goblin Fıçısı ile cevap verin.",
+                strategy: "Goblin Fıçısı ile sürekli baskı yapın. Prenses ile hava savunması yapın. Rakip Tomruk kullandığında Goblin Fıçısı ile cevap verin.",
                 synergies: ["Goblin Fıçısı + Prenses", "Şövalye + Goblin Fıçısı", "Cehennem Kulesi + Şok"],
                 decks: [
-                    { arena: 7, cards: ["Goblin Fıçısı", "Prenses", "Şövalye", "Cehennem Kulesi", "Goblinler", "Buz Ruhu", "Kütük", "Şok"] },
-                    { arena: 9, cards: ["Goblin Fıçısı", "Prenses", "Şövalye", "Cehennem Kulesi", "Goblinler", "Buz Ruhu", "Kütük", "Kasırga"] },
-                    { arena: 11, cards: ["Goblin Fıçısı", "Prenses", "Şövalye", "Cehennem Kulesi", "Goblinler", "Buz Ruhu", "Kütük", "Elektrik Büyücüsü"] }
+                    { arena: 7, cards: ["Goblin Fıçısı", "Prenses", "Şövalye", "Cehennem Kulesi", "Goblinler", "Buz Ruhu", "Tomruk", "Şok"] },
+                    { arena: 9, cards: ["Goblin Fıçısı", "Prenses", "Şövalye", "Cehennem Kulesi", "Goblinler", "Buz Ruhu", "Tomruk", "Kasırga"] },
+                    { arena: 11, cards: ["Goblin Fıçısı", "Prenses", "Şövalye", "Cehennem Kulesi", "Goblinler", "Buz Ruhu", "Tomruk", "Elektrik Büyücüsü"] }
                 ]
             },
             // GRAVEYARD DECK'LERİ
@@ -756,12 +751,12 @@
                 keyCards: ["Haydut", "Savaş Koçu", "Gece Cadısı", "Buz Ruhu"],
                 averageElixir: 3.8,
                 difficulty: "hard",
-                strategy: "Köprüden Haydut ve Savaş Koçu göndererek hızlı baskı kurun. Gece Cadısı ile destek sağlayın. Elixiri düşük kartlarla savunma yaparak karşı ataklar için elixir biriktirin.",
+                strategy: "Köprüden Haydut ve Savaş Koçu göndererek hızlı baskı kurun. Gece Cadısı ile destek sağlayın. İksiri düşük kartlarla savunma yaparak karşı ataklar için iksir biriktirin.",
                 synergies: ["Haydut + Savaş Koçu", "Gece Cadısı + Buz Ruhu", "Savaş Koçu + Öfke"],
                 decks: [
-                    { arena: 10, cards: ["Haydut", "Savaş Koçu", "Gece Cadısı", "Buz Ruhu", "Şok", "Kütük", "Cehennem Ejderhası", "Duvar Yıkıcılar"] },
-                    { arena: 11, cards: ["Haydut", "Savaş Koçu", "Gece Cadısı", "Buz Ruhu", "Şok", "Kütük", "Cehennem Ejderhası", "Elektrik Büyücüsü"] },
-                    { arena: 12, cards: ["Haydut", "Savaş Koçu", "Gece Cadısı", "Buz Ruhu", "Şok", "Kütük", "Cehennem Ejderhası", "Koç Sürücüsü"] }
+                    { arena: 10, cards: ["Haydut", "Savaş Koçu", "Gece Cadısı", "Buz Ruhu", "Şok", "Tomruk", "Cehennem Ejderhası", "Duvar Yıkıcılar"] },
+                    { arena: 11, cards: ["Haydut", "Savaş Koçu", "Gece Cadısı", "Buz Ruhu", "Şok", "Tomruk", "Cehennem Ejderhası", "Elektrik Büyücüsü"] },
+                    { arena: 12, cards: ["Haydut", "Savaş Koçu", "Gece Cadısı", "Buz Ruhu", "Şok", "Tomruk", "Cehennem Ejderhası", "Koç Sürücüsü"] }
                 ]
             },
             // X-BOW DECK'LERİ
@@ -771,12 +766,12 @@
                 keyCards: ["X-Oku", "Tesla", "Buz Ruhu", "İskeletler"],
                 averageElixir: 3.5,
                 difficulty: "hard",
-                strategy: "X-Oku'yu koruyarak rakip kuleye yerleştirin. Tesla ve İskeletler ile X-Oku'yu koruyun. Elixiri yöneterek sürekli baskı kurun.",
-                synergies: ["X-Oku + Tesla", "Buz Ruhu + İskeletler", "Kütük + Şok"],
+                strategy: "X-Oku'yu koruyarak rakip kuleye yerleştirin. Tesla ve İskeletler ile X-Oku'yu koruyun. İksiri yöneterek sürekli baskı kurun.",
+                synergies: ["X-Oku + Tesla", "Buz Ruhu + İskeletler", "Tomruk + Şok"],
                 decks: [
-                    { arena: 6, cards: ["X-Oku", "Tesla", "Buz Ruhu", "İskeletler", "Kütük", "Şok", "Dev Kar Topu", "Şövalye"] },
-                    { arena: 8, cards: ["X-Oku", "Tesla", "Buz Ruhu", "Yarasalar", "Kütük", "Şok", "Dev Kar Topu", "Valküre"] },
-                    { arena: 10, cards: ["X-Oku", "Tesla", "Buz Ruhu", "Yarasalar", "Kütük", "Barbar Fıçısı", "Dev Kar Topu", "Valküre"] }
+                    { arena: 6, cards: ["X-Oku", "Tesla", "Buz Ruhu", "İskeletler", "Tomruk", "Şok", "Dev Kar Topu", "Şövalye"] },
+                    { arena: 8, cards: ["X-Oku", "Tesla", "Buz Ruhu", "Yarasalar", "Tomruk", "Şok", "Dev Kar Topu", "Valküre"] },
+                    { arena: 10, cards: ["X-Oku", "Tesla", "Buz Ruhu", "Yarasalar", "Tomruk", "Barbar Fıçısı", "Dev Kar Topu", "Valküre"] }
                 ]
             },
             // GOLEM BEATDOWN DECK'LERİ
@@ -819,9 +814,9 @@
                 strategy: "P.E.K.K.A'yı doğru zamanda kullanın. Elektrik Büyücüsü ile destek sağlayın. Haydut ve Savaş Koçu ile hızlı baskılar yapın.",
                 synergies: ["P.E.K.K.A + Elektrik Büyücüsü", "Haydut + Savaş Koçu", "P.E.K.K.A + Şok"],
                 decks: [
-                    { arena: 11, cards: ["P.E.K.K.A", "Elektrik Büyücüsü", "Haydut", "Savaş Koçu", "Şok", "Kütük", "Buz Ruhu", "İskeletler"] },
-                    { arena: 12, cards: ["P.E.K.K.A", "Elektrik Büyücüsü", "Haydut", "Savaş Koçu", "Şok", "Kütük", "Buz Ruhu", "Toplu Taşıyıcı"] },
-                    { arena: 13, cards: ["P.E.K.K.A", "Elektrik Büyücüsü", "Haydut", "Savaş Koçu", "Şok", "Kütük", "Buz Ruhu", "Altın Şövalye"] }
+                    { arena: 11, cards: ["P.E.K.K.A", "Elektrik Büyücüsü", "Haydut", "Savaş Koçu", "Şok", "Tomruk", "Buz Ruhu", "İskeletler"] },
+                    { arena: 12, cards: ["P.E.K.K.A", "Elektrik Büyücüsü", "Haydut", "Savaş Koçu", "Şok", "Tomruk", "Buz Ruhu", "Toplu Taşıyıcı"] },
+                    { arena: 13, cards: ["P.E.K.K.A", "Elektrik Büyücüsü", "Haydut", "Savaş Koçu", "Şok", "Tomruk", "Buz Ruhu", "Altın Şövalye"] }
                 ]
             },
             // GIANT DOUBLE PRINCE DECK'LERİ
@@ -834,9 +829,9 @@
                 strategy: "Dev ile tank oluşturun. Arkasına Prens ve Karanlık Prens yerleştirerek güçlü kombinasyon oluşturun. Büyücü ile hava savunması yapın.",
                 synergies: ["Dev + Prens", "Prens + Karanlık Prens", "Büyücü + Dev"],
                 decks: [
-                    { arena: 4, cards: ["Dev", "Prens", "Karanlık Prens", "Büyücü", "Oklar", "İskeletler", "Mini P.E.K.K.A", "Mızrak Goblinleri"] },
-                    { arena: 7, cards: ["Dev", "Prens", "Karanlık Prens", "Büyücü", "Oklar", "İskeletler", "Mini P.E.K.K.A", "Buz Ruhu"] },
-                    { arena: 9, cards: ["Dev", "Prens", "Karanlık Prens", "Büyücü", "Oklar", "İskeletler", "Mini P.E.K.K.A", "Kasırga"] }
+                    { arena: 4, cards: ["Dev", "Prens", "Karanlık Prens", "Büyücü", "Ok", "İskeletler", "Mini P.E.K.K.A", "Mızrak Goblinleri"] },
+                    { arena: 7, cards: ["Dev", "Prens", "Karanlık Prens", "Büyücü", "Ok", "İskeletler", "Mini P.E.K.K.A", "Buz Ruhu"] },
+                    { arena: 9, cards: ["Dev", "Prens", "Karanlık Prens", "Büyücü", "Ok", "İskeletler", "Mini P.E.K.K.A", "Kasırga"] }
                 ]
             },
             // ROYAL GIANT DECK'LERİ
@@ -864,24 +859,24 @@
                 strategy: "Mega Şövalye ile alan kontrolü yapın. Buz Ruhu ve Şok ile küçük birlikleri temizleyin. İskeletler ile destek sağlayın.",
                 synergies: ["Mega Şövalye + Buz Ruhu", "Buz Ruhu + Şok", "Mega Şövalye + İskeletler"],
                 decks: [
-                    { arena: 10, cards: ["Mega Şövalye", "Buz Ruhu", "Şok", "İskeletler", "Mızrak Goblinleri", "Kütük", "Top", "Şövalye"] },
-                    { arena: 12, cards: ["Mega Şövalye", "Buz Ruhu", "Şok", "Yarasalar", "Mızrak Goblinleri", "Kütük", "Tesla", "Valküre"] },
-                    { arena: 13, cards: ["Mega Şövalye", "Buz Ruhu", "Şok", "Yarasalar", "Mızrak Goblinleri", "Kütük", "Tesla", "Elektrik Büyücüsü"] }
+                    { arena: 10, cards: ["Mega Şövalye", "Buz Ruhu", "Şok", "İskeletler", "Mızrak Goblinleri", "Tomruk", "Top", "Şövalye"] },
+                    { arena: 12, cards: ["Mega Şövalye", "Buz Ruhu", "Şok", "Yarasalar", "Mızrak Goblinleri", "Tomruk", "Tesla", "Valküre"] },
+                    { arena: 13, cards: ["Mega Şövalye", "Buz Ruhu", "Şok", "Yarasalar", "Mızrak Goblinleri", "Tomruk", "Tesla", "Elektrik Büyücüsü"] }
                 ]
             },
             // SPARKY DECK'LERİ
             sparkyControl: {
-                name: "Sparkey Kontrol",
-                description: "Sparkey ile büyük hasar veren kontrol deck'i",
-                keyCards: ["Sparkey", "Buz Golemi", "Elektrik Büyücüsü", "Şok"],
+                name: "Kıvılcım Kontrol",
+                description: "Kıvılcım ile büyük hasar veren kontrol deck'i",
+                keyCards: ["Kıvılcım", "Buz Golemi", "Elektrik Büyücüsü", "Şok"],
                 averageElixir: 4.0,
                 difficulty: "medium",
-                strategy: "Sparkey'yi koruyarak rakip kuleye yerleştirin. Buz Golemi ile Sparkey'yi koruyun. Elektrik Büyücüsü ile destek sağlayın.",
-                synergies: ["Sparkey + Buz Golemi", "Elektrik Büyücüsü + Şok", "Buz Golemi + Yarasalar"],
+                strategy: "Kıvılcım'ı koruyarak rakip kuleye yerleştirin. Buz Golemi ile Kıvılcım'ı koruyun. Elektrik Büyücüsü ile destek sağlayın.",
+                synergies: ["Kıvılcım + Buz Golemi", "Elektrik Büyücüsü + Şok", "Buz Golemi + Yarasalar"],
                 decks: [
-                    { arena: 8, cards: ["Sparkey", "Buz Golemi", "Elektrik Büyücüsü", "Şok", "Yarasalar", "İskeletler", "Ateş Topu", "Tüfekçi"] },
-                    { arena: 10, cards: ["Sparkey", "Buz Golemi", "Elektrik Büyücüsü", "Şok", "Yarasalar", "İskeletler", "Ateş Topu", "Buz Büyücüsü"] },
-                    { arena: 12, cards: ["Sparkey", "Buz Golemi", "Elektrik Büyücüsü", "Şok", "Yarasalar", "İskeletler", "Ateş Topu", "Elektrik Büyücüsü"] }
+                    { arena: 8, cards: ["Kıvılcım", "Buz Golemi", "Elektrik Büyücüsü", "Şok", "Yarasalar", "İskeletler", "Ateş Topu", "Tüfekçi"] },
+                    { arena: 10, cards: ["Kıvılcım", "Buz Golemi", "Elektrik Büyücüsü", "Şok", "Yarasalar", "İskeletler", "Ateş Topu", "Buz Büyücüsü"] },
+                    { arena: 12, cards: ["Kıvılcım", "Buz Golemi", "Elektrik Büyücüsü", "Şok", "Yarasalar", "İskeletler", "Ateş Topu", "Elektrik Büyücüsü"] }
                 ]
             },
             // THREE MUSKETEERS DECK'LERİ
@@ -906,12 +901,12 @@
                 keyCards: ["Havan", "Tesla", "Buz Ruhu", "İskeletler"],
                 averageElixir: 3.4,
                 difficulty: "hard",
-                strategy: "Havan'ı koruyarak rakip kuleye yerleştirin. Tesla ve İskeletler ile Havan'ı koruyun. Elixiri yöneterek sürekli baskı kurun.",
-                synergies: ["Havan + Tesla", "Buz Ruhu + İskeletler", "Kütük + Şok"],
+                strategy: "Havan'ı koruyarak rakip kuleye yerleştirin. Tesla ve İskeletler ile Havan'ı koruyun. İksiri yöneterek sürekli baskı kurun.",
+                synergies: ["Havan + Tesla", "Buz Ruhu + İskeletler", "Tomruk + Şok"],
                 decks: [
-                    { arena: 6, cards: ["Havan", "Tesla", "Buz Ruhu", "İskeletler", "Kütük", "Şok", "Dev Kar Topu", "Şövalye"] },
-                    { arena: 8, cards: ["Havan", "Tesla", "Buz Ruhu", "Yarasalar", "Kütük", "Şok", "Dev Kar Topu", "Valküre"] },
-                    { arena: 10, cards: ["Havan", "Tesla", "Buz Ruhu", "Yarasalar", "Kütük", "Barbar Fıçısı", "Dev Kar Topu", "Valküre"] }
+                    { arena: 6, cards: ["Havan", "Tesla", "Buz Ruhu", "İskeletler", "Tomruk", "Şok", "Dev Kar Topu", "Şövalye"] },
+                    { arena: 8, cards: ["Havan", "Tesla", "Buz Ruhu", "Yarasalar", "Tomruk", "Şok", "Dev Kar Topu", "Valküre"] },
+                    { arena: 10, cards: ["Havan", "Tesla", "Buz Ruhu", "Yarasalar", "Tomruk", "Barbar Fıçısı", "Dev Kar Topu", "Valküre"] }
                 ]
             },
             // FISHERMAN DECK'LERİ
@@ -947,11 +942,11 @@
             // EKSTRA DECK VARYASYONLARI
             hog2point6: {
                 name: "2.6 Hog Cycle",
-                description: "En düşük ortalama elixir'e sahip klasik Hog deck",
+                description: "En düşük ortalama iksir'e sahip klasik Hog deck",
                 keyCards: ["Domuz Sürücüsü", "Şok", "Buz Ruhu", "İskeletler"],
                 averageElixir: 2.6,
                 difficulty: "hard",
-                strategy: "Elixiri sürekli olarak 10'da tutun. Rakibin her hamlesine en uygun kartla cevap vererek elixir avantajı sağlayın ve Domuz Sürücüsü ile baskı kurun.",
+                strategy: "İksiri sürekli olarak 10'da tutun. Rakibin her hamlesine en uygun kartla cevap vererek iksir avantajı sağlayın ve Domuz Sürücüsü ile baskı kurun.",
                 synergies: ["Domuz Sürücüsü + Buz Ruhu", "İskeletler + Şok", "Top + Şok"],
                 decks: [
                     { arena: 4, cards: ["Domuz Sürücüsü", "Şok", "Buz Ruhu", "İskeletler", "Mızrak Goblinleri", "Top", "Ateş Topu", "Tüfekçi"] },
@@ -969,8 +964,8 @@
                 synergies: ["Dev + Mezarlık", "Buz Golemi + Mezarlık", "Dev + Şok"],
                 decks: [
                     { arena: 1, cards: ["Mezarlık", "Dev", "Buz Golemi", "Şok", "İskeletler", "Mızrak Goblinleri", "Ateş Topu", "Şövalye"] },
-                    { arena: 3, cards: ["Mezarlık", "Dev", "Buz Golemi", "Şok", "İskeletler", "Mızrak Goblinleri", "Kütük", "Valküre"] },
-                    { arena: 5, cards: ["Mezarlık", "Dev", "Buz Golemi", "Şok", "İskeletler", "Mızrak Goblinleri", "Kütük", "Elektrik Büyücüsü"] }
+                    { arena: 3, cards: ["Mezarlık", "Dev", "Buz Golemi", "Şok", "İskeletler", "Mızrak Goblinleri", "Tomruk", "Valküre"] },
+                    { arena: 5, cards: ["Mezarlık", "Dev", "Buz Golemi", "Şok", "İskeletler", "Mızrak Goblinleri", "Tomruk", "Elektrik Büyücüsü"] }
                 ]
             },
             golemNightWitch: {
@@ -983,8 +978,8 @@
                 synergies: ["Golem + Gece Cadısı", "Gece Cadısı + Buz Ruhu", "Golem + Şok"],
                 decks: [
                     { arena: 10, cards: ["Golem", "Gece Cadısı", "Buz Ruhu", "Şok", "İskeletler", "Mızrak Goblinleri", "Ateş Topu", "Şövalye"] },
-                    { arena: 12, cards: ["Golem", "Gece Cadısı", "Buz Ruhu", "Şok", "İskeletler", "Mızrak Goblinleri", "Kütük", "Valküre"] },
-                    { arena: 14, cards: ["Golem", "Gece Cadısı", "Buz Ruhu", "Şok", "İskeletler", "Mızrak Goblinleri", "Kütük", "Elektrik Büyücüsü"] }
+                    { arena: 12, cards: ["Golem", "Gece Cadısı", "Buz Ruhu", "Şok", "İskeletler", "Mızrak Goblinleri", "Tomruk", "Valküre"] },
+                    { arena: 14, cards: ["Golem", "Gece Cadısı", "Buz Ruhu", "Şok", "İskeletler", "Mızrak Goblinleri", "Tomruk", "Elektrik Büyücüsü"] }
                 ]
             },
             minerBats: {
@@ -1003,17 +998,17 @@
             },
             // Daha fazla varyasyon...
             logBaitPrincess: {
-                name: "Prenses Kütük Tuzak",
-                description: "Prenses ile güçlendirilmiş Kütük Tuzak deck'i",
-                keyCards: ["Goblin Fıçısı", "Prenses", "Kütük", "Şok"],
+                name: "Prenses Tomruk Tuzak",
+                description: "Prenses ile güçlendirilmiş Tomruk Tuzak deck'i",
+                keyCards: ["Goblin Fıçısı", "Prenses", "Tomruk", "Şok"],
                 averageElixir: 3.4,
                 difficulty: "medium",
-                strategy: "Prenses ile arkadan destek sağlayın. Goblin Fıçısı ile sürekli baskı yapın. Rakip Kütük kullandığında avantaj sağlayın.",
-                synergies: ["Goblin Fıçısı + Prenses", "Prenses + Kütük", "Goblin Fıçısı + Şok"],
+                strategy: "Prenses ile arkadan destek sağlayın. Goblin Fıçısı ile sürekli baskı yapın. Rakip Tomruk kullandığında avantaj sağlayın.",
+                synergies: ["Goblin Fıçısı + Prenses", "Prenses + Tomruk", "Goblin Fıçısı + Şok"],
                 decks: [
-                    { arena: 7, cards: ["Goblin Fıçısı", "Prenses", "Kütük", "Şok", "Goblinler", "Buz Ruhu", "Şövalye", "Cehennem Kulesi"] },
-                    { arena: 9, cards: ["Goblin Fıçısı", "Prenses", "Kütük", "Şok", "Goblinler", "Buz Ruhu", "Valküre", "Cehennem Kulesi"] },
-                    { arena: 11, cards: ["Goblin Fıçısı", "Prenses", "Kütük", "Şok", "Goblinler", "Buz Ruhu", "Elektrik Büyücüsü", "Cehennem Kulesi"] }
+                    { arena: 7, cards: ["Goblin Fıçısı", "Prenses", "Tomruk", "Şok", "Goblinler", "Buz Ruhu", "Şövalye", "Cehennem Kulesi"] },
+                    { arena: 9, cards: ["Goblin Fıçısı", "Prenses", "Tomruk", "Şok", "Goblinler", "Buz Ruhu", "Valküre", "Cehennem Kulesi"] },
+                    { arena: 11, cards: ["Goblin Fıçısı", "Prenses", "Tomruk", "Şok", "Goblinler", "Buz Ruhu", "Elektrik Büyücüsü", "Cehennem Kulesi"] }
                 ]
             },
             bridgeSpamRamRider: {
@@ -1026,8 +1021,8 @@
                 synergies: ["Koç Sürücüsü + Haydut", "Haydut + Buz Ruhu", "Koç Sürücüsü + Şok"],
                 decks: [
                     { arena: 12, cards: ["Koç Sürücüsü", "Haydut", "Buz Ruhu", "Şok", "İskeletler", "Mızrak Goblinleri", "Ateş Topu", "Şövalye"] },
-                    { arena: 13, cards: ["Koç Sürücüsü", "Haydut", "Buz Ruhu", "Şok", "İskeletler", "Mızrak Goblinleri", "Kütük", "Valküre"] },
-                    { arena: 14, cards: ["Koç Sürücüsü", "Haydut", "Buz Ruhu", "Şok", "İskeletler", "Mızrak Goblinleri", "Kütük", "Elektrik Büyücüsü"] }
+                    { arena: 13, cards: ["Koç Sürücüsü", "Haydut", "Buz Ruhu", "Şok", "İskeletler", "Mızrak Goblinleri", "Tomruk", "Valküre"] },
+                    { arena: 14, cards: ["Koç Sürücüsü", "Haydut", "Buz Ruhu", "Şok", "İskeletler", "Mızrak Goblinleri", "Tomruk", "Elektrik Büyücüsü"] }
                 ]
             },
             xbowKnight: {
@@ -1039,7 +1034,7 @@
                 strategy: "X-Oku'yu koruyarak yerleştirin. Şövalye ile hem X-Oku'yu koruyun hem de kara tehditlerini savunun.",
                 synergies: ["X-Oku + Şövalye", "Şövalye + Buz Ruhu", "X-Oku + Şok"],
                 decks: [
-                    { arena: 6, cards: ["X-Oku", "Şövalye", "Buz Ruhu", "Şok", "İskeletler", "Mızrak Goblinleri", "Kütük", "Top"] },
+                    { arena: 6, cards: ["X-Oku", "Şövalye", "Buz Ruhu", "Şok", "İskeletler", "Mızrak Goblinleri", "Tomruk", "Top"] },
                     { arena: 8, cards: ["X-Oku", "Şövalye", "Buz Ruhu", "Şok", "İskeletler", "Mızrak Goblinleri", "Dev Kar Topu", "Tesla"] },
                     { arena: 10, cards: ["X-Oku", "Şövalye", "Buz Ruhu", "Şok", "İskeletler", "Mızrak Goblinleri", "Dev Kar Topu", "Elektrik Büyücüsü"] }
                 ]
@@ -1068,8 +1063,8 @@
                 synergies: ["Lava Köpeği + Madenci", "Madenci + Buz Ruhu", "Lava Köpeği + Şok"],
                 decks: [
                     { arena: 7, cards: ["Lava Köpeği", "Madenci", "Buz Ruhu", "Şok", "İskeletler", "Mızrak Goblinleri", "Ateş Topu", "Tüfekçi"] },
-                    { arena: 9, cards: ["Lava Köpeği", "Madenci", "Buz Ruhu", "Şok", "İskeletler", "Mızrak Goblinleri", "Kütük", "Buz Büyücüsü"] },
-                    { arena: 11, cards: ["Lava Köpeği", "Madenci", "Buz Ruhu", "Şok", "İskeletler", "Mızrak Goblinleri", "Kütük", "Elektrik Büyücüsü"] }
+                    { arena: 9, cards: ["Lava Köpeği", "Madenci", "Buz Ruhu", "Şok", "İskeletler", "Mızrak Goblinleri", "Tomruk", "Buz Büyücüsü"] },
+                    { arena: 11, cards: ["Lava Köpeği", "Madenci", "Buz Ruhu", "Şok", "İskeletler", "Mızrak Goblinleri", "Tomruk", "Elektrik Büyücüsü"] }
                 ]
             },
             electroGiant: {
@@ -1087,31 +1082,31 @@
                 ]
             },
             sparkyFreeze: {
-                name: "Sparkey Donma",
-                description: "Donma büyüsü ile rakibi felç eden Sparkey deck'i",
-                keyCards: ["Sparkey", "Donma", "Buz Golemi", "Şok"],
+                name: "Kıvılcım Donma",
+                description: "Donma büyüsü ile rakibi felç eden Kıvılcım deck'i",
+                keyCards: ["Kıvılcım", "Donma", "Buz Golemi", "Şok"],
                 averageElixir: 4.1,
                 difficulty: "hard",
-                strategy: "Sparkey kuleye ulaştığında Donma büyüsü kullanarak savunmayı durdurun ve maksimum hasar alın. Buz Golemi ile koruma sağlayın.",
-                synergies: ["Sparkey + Donma", "Donma + Buz Golemi", "Sparkey + Şok"],
+                strategy: "Kıvılcım kuleye ulaştığında Donma büyüsü kullanarak savunmayı durdurun ve maksimum hasar alın. Buz Golemi ile koruma sağlayın.",
+                synergies: ["Kıvılcım + Donma", "Donma + Buz Golemi", "Kıvılcım + Şok"],
                 decks: [
-                    { arena: 6, cards: ["Sparkey", "Donma", "Buz Golemi", "Şok", "Yarasalar", "İskeletler", "Ateş Topu", "Tüfekçi"] },
-                    { arena: 8, cards: ["Sparkey", "Donma", "Buz Golemi", "Şok", "Yarasalar", "İskeletler", "Ateş Topu", "Buz Büyücüsü"] },
-                    { arena: 10, cards: ["Sparkey", "Donma", "Buz Golemi", "Şok", "Yarasalar", "İskeletler", "Ateş Topu", "Elektrik Büyücüsü"] }
+                    { arena: 6, cards: ["Kıvılcım", "Donma", "Buz Golemi", "Şok", "Yarasalar", "İskeletler", "Ateş Topu", "Tüfekçi"] },
+                    { arena: 8, cards: ["Kıvılcım", "Donma", "Buz Golemi", "Şok", "Yarasalar", "İskeletler", "Ateş Topu", "Buz Büyücüsü"] },
+                    { arena: 10, cards: ["Kıvılcım", "Donma", "Buz Golemi", "Şok", "Yarasalar", "İskeletler", "Ateş Topu", "Elektrik Büyücüsü"] }
                 ]
             },
             royalGiantCycle: {
                 name: "Kraliyet Devi Cycle",
-                description: "Düşük elixir kartlarla döngü kuran Kraliyet Devi deck'i",
+                description: "Düşük iksir kartlarla döngü kuran Kraliyet Devi deck'i",
                 keyCards: ["Kraliyet Devi", "Şok", "Buz Ruhu", "İskeletler"],
                 averageElixir: 3.7,
                 difficulty: "medium",
-                strategy: "Kraliyet Devi ile sürekli baskı kurun. Düşük elixir kartlarla savunma yaparak elixir avantajı sağlayın.",
+                strategy: "Kraliyet Devi ile sürekli baskı kurun. Düşük iksir kartlarla savunma yaparak iksir avantajı sağlayın.",
                 synergies: ["Kraliyet Devi + Şok", "Şok + Buz Ruhu", "Kraliyet Devi + İskeletler"],
                 decks: [
                     { arena: 7, cards: ["Kraliyet Devi", "Şok", "Buz Ruhu", "İskeletler", "Mızrak Goblinleri", "Top", "Tesla", "Şövalye"] },
-                    { arena: 9, cards: ["Kraliyet Devi", "Şok", "Buz Ruhu", "İskeletler", "Mızrak Goblinleri", "Kütük", "Tesla", "Valküre"] },
-                    { arena: 11, cards: ["Kraliyet Devi", "Şok", "Buz Ruhu", "İskeletler", "Mızrak Goblinleri", "Kütük", "Tesla", "Elektrik Büyücüsü"] }
+                    { arena: 9, cards: ["Kraliyet Devi", "Şok", "Buz Ruhu", "İskeletler", "Mızrak Goblinleri", "Tomruk", "Tesla", "Valküre"] },
+                    { arena: 11, cards: ["Kraliyet Devi", "Şok", "Buz Ruhu", "İskeletler", "Mızrak Goblinleri", "Tomruk", "Tesla", "Elektrik Büyücüsü"] }
                 ]
             },
             mortarKnight: {
@@ -1123,7 +1118,7 @@
                 strategy: "Havan'ı koruyarak yerleştirin. Şövalye ile hem Havan'ı koruyun hem de kara tehditlerini savunun.",
                 synergies: ["Havan + Şövalye", "Şövalye + Buz Ruhu", "Havan + Şok"],
                 decks: [
-                    { arena: 6, cards: ["Havan", "Şövalye", "Buz Ruhu", "Şok", "İskeletler", "Mızrak Goblinleri", "Kütük", "Top"] },
+                    { arena: 6, cards: ["Havan", "Şövalye", "Buz Ruhu", "Şok", "İskeletler", "Mızrak Goblinleri", "Tomruk", "Top"] },
                     { arena: 8, cards: ["Havan", "Şövalye", "Buz Ruhu", "Şok", "İskeletler", "Mızrak Goblinleri", "Dev Kar Topu", "Tesla"] },
                     { arena: 10, cards: ["Havan", "Şövalye", "Buz Ruhu", "Şok", "İskeletler", "Mızrak Goblinleri", "Dev Kar Topu", "Elektrik Büyücüsü"] }
                 ]
@@ -1135,7 +1130,7 @@
                 keyCards: ["Dev", "Büyücü", "Minyonlar", "Ateş Topu"],
                 averageElixir: 4.1,
                 difficulty: "easy",
-                strategy: "Dev'i gönderin ve arkasına Büyücüyü yerleştirin. Büyücünün alan hasarı ve Minyonlar ile hava savunması yapın.",
+                strategy: "Dev'i gönderin ve arkasına Büyücüyü yerleştirin. Büyücunun alan hasarı ve Minyonlar ile hava savunması yapın.",
                 synergies: ["Dev + Büyücü", "Büyücü + Minyonlar", "Dev + Ateş Topu"],
                 decks: [
                     { arena: 1, cards: ["Dev", "Büyücü", "Minyonlar", "Ateş Topu", "İskeletler", "Şok", "Mızrak Goblinleri", "Şövalye"] },
@@ -1391,7 +1386,7 @@
             return allDecks.sort(() => Math.random() - 0.5).slice(0, 10);
         }
 
-        // Ortalama elixir hesapla
+        // Ortalama iksir hesapla
         function calculateAverageElixir(cardNames) {
             const totalCost = cardNames.reduce((sum, cardName) => {
                 const card = cards.find(c => c.name === cardName);
@@ -1503,14 +1498,14 @@
             if (deckName.includes("Dev")) return "Dev";
             if (deckName.includes("Kraliyet")) return "Kraliyet";
             if (deckName.includes("Mega")) return "Mega";
-            if (deckName.includes("Sparkey")) return "Sparkey";
+            if (deckName.includes("Kıvılcım")) return "Kıvılcım";
             if (deckName.includes("Üç")) return "Üç Tüfekçi";
             if (deckName.includes("Elektrik")) return "Elektrik";
             if (deckName.includes("Balıkçı")) return "Balıkçı";
             if (deckName.includes("Anne")) return "Anne Cadı";
             if (deckName.includes("Barbar")) return "Barbar";
             if (deckName.includes("Roket")) return "Roket";
-            if (deckName.includes("Eliksir")) return "Eliksir";
+            if (deckName.includes("İksir")) return "İksir";
             return "Meta";
         }
 
@@ -1539,7 +1534,7 @@
             if (deckName.includes("Golem")) return Math.floor(Math.random() * 5) + 50;
             if (deckName.includes("Dev")) return Math.floor(Math.random() * 5) + 49;
             if (deckName.includes("Mega")) return Math.floor(Math.random() * 5) + 51;
-            if (deckName.includes("Sparkey")) return Math.floor(Math.random() * 5) + 50;
+            if (deckName.includes("Kıvılcım")) return Math.floor(Math.random() * 5) + 50;
             if (deckName.includes("Üç")) return Math.floor(Math.random() * 5) + 49;
             if (deckName.includes("Elektrik")) return Math.floor(Math.random() * 5) + 52;
             return Math.floor(Math.random() * 5) + 50;
