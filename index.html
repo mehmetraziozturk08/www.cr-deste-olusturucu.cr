@@ -1,0 +1,1570 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clash Royale Deck Öneri Sistemi</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #fff;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            animation: fadeInDown 0.8s ease;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .setup-container {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .setup-card {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            animation: fadeIn 1s ease;
+        }
+
+        .arena-selector, .card-selector {
+            min-width: 350px;
+        }
+
+        .arena-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .arena-btn {
+            background: rgba(255,255,255,0.2);
+            border: 2px solid rgba(255,255,255,0.3);
+            border-radius: 10px;
+            padding: 12px 8px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            text-align: center;
+            font-size: 0.85rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .arena-btn:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateY(-2px);
+        }
+
+        .arena-btn.selected {
+            background: rgba(76, 175, 80, 0.6);
+            border-color: #4CAF50;
+            box-shadow: 0 0 15px rgba(76, 175, 80, 0.5);
+        }
+
+        .arena-name {
+            font-weight: bold;
+        }
+
+        .arena-trophies {
+            font-size: 0.75rem;
+            opacity: 0.8;
+            color: #FFD700;
+        }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 8px;
+            margin-top: 15px;
+            max-height: 400px;
+            overflow-y: auto;
+            padding: 10px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 10px;
+        }
+
+        .card-checkbox {
+            display: none;
+        }
+
+        .card-label {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 8px;
+            background: rgba(255,255,255,0.15);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            position: relative;
+        }
+
+        .card-label:hover {
+            background: rgba(255,255,255,0.25);
+        }
+
+        .card-checkbox:checked + .card-label {
+            background: rgba(76, 175, 80, 0.5);
+            border-color: #4CAF50;
+        }
+
+        .card-checkbox:disabled + .card-label {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        .card-image {
+            width: 50px;
+            height: 70px;
+            border-radius: 5px;
+            margin-bottom: 4px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+            object-fit: cover;
+            background: #2c3e50;
+        }
+
+        .card-name {
+            font-size: 9px;
+            text-align: center;
+            color: white;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+            line-height: 1.2;
+        }
+
+        .card-cost {
+            position: absolute;
+            top: 2px;
+            right: 2px;
+            background: rgba(0,0,0,0.7);
+            color: #FFD700;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            font-weight: bold;
+        }
+
+        .button-container {
+            text-align: center;
+            margin: 30px 0;
+        }
+
+        .generate-btn {
+            display: inline-block;
+            margin: 5px;
+            padding: 15px 30px;
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            border: none;
+            border-radius: 50px;
+            color: white;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+        }
+
+        .generate-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4);
+        }
+
+        .generate-btn:disabled {
+            background: #666;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .generate-btn.all {
+            background: linear-gradient(135deg, #2196F3, #1976D2);
+        }
+
+        .generate-btn.all:hover {
+            box-shadow: 0 6px 20px rgba(33, 150, 243, 0.4);
+        }
+
+        .results-container {
+            display: none;
+            animation: fadeInUp 0.8s ease;
+        }
+
+        .results-container.show {
+            display: block;
+        }
+
+        .deck-card {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .deck-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .deck-name {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .deck-stats {
+            display: flex;
+            gap: 15px;
+        }
+
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .deck-cards {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .deck-card-item {
+            background: rgba(0,0,0,0.3);
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .deck-card-item:hover {
+            transform: translateY(-5px);
+            background: rgba(0,0,0,0.4);
+        }
+
+        .deck-card-item.not-owned {
+            opacity: 0.6;
+            border: 2px dashed rgba(255,255,255,0.3);
+        }
+
+        .deck-card-image {
+            width: 60px;
+            height: 84px;
+            border-radius: 5px;
+            margin-bottom: 8px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.4);
+            object-fit: cover;
+            background: #2c3e50;
+        }
+
+        .deck-card-name {
+            font-size: 12px;
+            margin-bottom: 5px;
+            color: white;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+
+        .deck-card-cost {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: rgba(0,0,0,0.8);
+            color: #FFD700;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .strategy-section {
+            background: rgba(0,0,0,0.2);
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 15px;
+        }
+
+        .strategy-title {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            color: #FFD700;
+        }
+
+        .strategy-text {
+            line-height: 1.6;
+            opacity: 0.9;
+        }
+
+        .synergy-item {
+            display: inline-block;
+            background: rgba(76, 175, 80, 0.3);
+            padding: 5px 10px;
+            border-radius: 20px;
+            margin: 5px;
+            font-size: 0.9rem;
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(76, 175, 80, 0.9);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+            z-index: 1000;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .card-counter {
+            margin-top: 10px;
+            text-align: center;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .rarity-indicator {
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        .rarity-common { background: #ffffff; }
+        .rarity-rare { background: #1db954; }
+        .rarity-epic { background: #9b59b6; }
+        .rarity-legendary { background: #f39c12; }
+        .rarity-champion { background: #e74c3c; }
+
+        .deck-type-badge {
+            display: inline-block;
+            background: rgba(33, 150, 243, 0.5);
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            margin-left: 10px;
+        }
+
+        .win-rate {
+            color: #4CAF50;
+            font-weight: bold;
+        }
+
+        .difficulty-badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            margin-left: 5px;
+        }
+
+        .difficulty-easy { background: rgba(76, 175, 80, 0.5); }
+        .difficulty-medium { background: rgba(255, 193, 7, 0.5); }
+        .difficulty-hard { background: rgba(244, 67, 54, 0.5); }
+
+        .meta-badge {
+            background: linear-gradient(135deg, #FF6B6B, #FF5252);
+            color: white;
+            padding: 2px 6px;
+            border-radius: 8px;
+            font-size: 0.7rem;
+            margin-left: 5px;
+        }
+
+        .arena-requirement {
+            background: rgba(255, 193, 7, 0.3);
+            padding: 2px 6px;
+            border-radius: 8px;
+            font-size: 0.7rem;
+            margin-left: 5px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .arena-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .card-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+            
+            .deck-cards {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+
+            .generate-btn {
+                display: block;
+                margin: 10px auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>⚔️ Clash Royale Deck Öneri Sistemi</h1>
+            <p class="subtitle">Arenanıza göre en iyi meta deck'ler (100+ Deck)</p>
+        </header>
+
+        <div class="setup-container">
+            <div class="setup-card arena-selector">
+                <h2>🏰 Arena Seçimi</h2>
+                <div class="arena-grid" id="arenaGrid">
+                    <!-- Arenalar JavaScript ile oluşturulacak -->
+                </div>
+            </div>
+
+            <div class="setup-card card-selector">
+                <h2>🃏 Sahip Olduğunuz Kartlar (İsteğe Bağlı)</h2>
+                <div class="card-grid" id="cardGrid">
+                    <!-- Kartlar JavaScript ile oluşturulacak -->
+                </div>
+                <div class="card-counter" id="cardCounter">Seçilen kart: 0</div>
+            </div>
+        </div>
+
+        <div class="button-container">
+            <button class="generate-btn" id="generateBtn" disabled>Uygun Deck'leri Bul</button>
+            <button class="generate-btn all" id="generateAllBtn" disabled>Tüm Meta Deck'ler</button>
+        </div>
+
+        <div class="results-container" id="resultsContainer">
+            <!-- Önerilen desteler burada gösterilecek -->
+        </div>
+    </div>
+
+    <div class="notification" id="notification"></div>
+
+    <script>
+        // Clash Royale verileri
+        const arenas = [
+            { id: 1, name: "Eğitim Kampı", trophies: 0 },
+            { id: 2, name: "Goblin Stadyumu", trophies: 0 },
+            { id: 3, name: "Kemik Çukuru", trophies: 400 },
+            { id: 4, name: "Barbar Kabuğu", trophies: 800 },
+            { id: 5, name: "P.E.K.K.A'nın Oyun Evi", trophies: 1100 },
+            { id: 6, name: "Büyü Vadisi", trophies: 1400 },
+            { id: 7, name: "Usta Atölyesi", trophies: 1700 },
+            { id: 8, name: "Kraliyet Arenası", trophies: 2000 },
+            { id: 9, name: "Buzlu Zirve", trophies: 2300 },
+            { id: 10, name: "Cengel Arenası", trophies: 2600 },
+            { id: 11, name: "Domuz Dağı", trophies: 3000 },
+            { id: 12, name: "Elektrik Vadisi", trophies: 3400 },
+            { id: 13, name: "Korku Kasabası", trophies: 3800 },
+            { id: 14, name: "Haydudakı Sığınağı", trophies: 4000 }
+        ];
+
+        // Gerçek Clash Royale kartları
+        const cards = [
+            // Common cards
+            { id: 1, name: "Oklar", cost: 3, type: "spell", rarity: "common", arena: 1, image: "arrows" },
+            { id: 2, name: "Okçular", cost: 3, type: "troop", rarity: "common", arena: 1, image: "archers" },
+            { id: 3, name: "Bebek Ejderha", cost: 4, type: "troop", rarity: "common", arena: 2, image: "baby-dragon" },
+            { id: 4, name: "Yarasalar", cost: 2, type: "troop", rarity: "common", arena: 8, image: "bats" },
+            { id: 5, name: "Bombacı", cost: 2, type: "troop", rarity: "common", arena: 1, image: "bomber" },
+            { id: 6, name: "Top", cost: 3, type: "building", rarity: "common", arena: 1, image: "cannon" },
+            { id: 7, name: "Ateş Topu", cost: 4, type: "spell", rarity: "common", arena: 1, image: "fireball" },
+            { id: 8, name: "Dev", cost: 5, type: "troop", rarity: "common", arena: 1, image: "giant" },
+            { id: 9, name: "Goblin", cost: 1, type: "troop", rarity: "common", arena: 1, image: "goblin" },
+            { id: 10, name: "Goblin Fıçısı", cost: 3, type: "spell", rarity: "common", arena: 1, image: "goblin-barrel" },
+            { id: 11, name: "Goblinler", cost: 2, type: "troop", rarity: "common", arena: 1, image: "goblins" },
+            { id: 12, name: "Şövalye", cost: 3, type: "troop", rarity: "common", arena: 1, image: "knight" },
+            { id: 13, name: "Minyon", cost: 3, type: "troop", rarity: "common", arena: 1, image: "minion" },
+            { id: 14, name: "Minyonlar", cost: 3, type: "troop", rarity: "common", arena: 1, image: "minions" },
+            { id: 15, name: "Tüfekçi", cost: 4, type: "troop", rarity: "common", arena: 1, image: "musketeer" },
+            { id: 16, name: "Öfke", cost: 2, type: "spell", rarity: "common", arena: 2, image: "rage" },
+            { id: 17, name: "İskelet Ordusu", cost: 3, type: "troop", rarity: "common", arena: 2, image: "skeleton-army" },
+            { id: 18, name: "İskeletler", cost: 1, type: "troop", rarity: "common", arena: 1, image: "skeletons" },
+            { id: 19, name: "Mızrak Goblinleri", cost: 2, type: "troop", rarity: "common", arena: 1, image: "spear-goblins" },
+            { id: 20, name: "Mezar Taşı", cost: 3, type: "building", rarity: "common", arena: 2, image: "tombstone" },
+            { id: 21, name: "Valküre", cost: 4, type: "troop", rarity: "common", arena: 1, image: "valkyrie" },
+            { id: 22, name: "Büyücü", cost: 5, type: "troop", rarity: "common", arena: 1, image: "wizard" },
+            { id: 23, name: "Şok", cost: 2, type: "spell", rarity: "common", arena: 1, image: "zap" },
+            
+            // Rare cards
+            { id: 24, name: "Barbarlar", cost: 5, type: "troop", rarity: "rare", arena: 2, image: "barbarians" },
+            { id: 25, name: "Bombacı Kule", cost: 4, type: "building", rarity: "rare", arena: 3, image: "bomb-tower" },
+            { id: 26, name: "Karanlık Prens", cost: 4, type: "troop", rarity: "rare", arena: 7, image: "dark-prince" },
+            { id: 27, name: "Eliksir Toplayıcı", cost: 6, type: "building", rarity: "rare", arena: 5, image: "elixir-collector" },
+            { id: 28, name: "Fırın", cost: 4, type: "building", rarity: "rare", arena: 6, image: "furnace" },
+            { id: 29, name: "Dev İskelet", cost: 6, type: "troop", rarity: "rare", arena: 4, image: "giant-skeleton" },
+            { id: 30, name: "Goblin Kulübesi", cost: 5, type: "building", rarity: "rare", arena: 3, image: "goblin-hut" },
+            { id: 31, name: "Domuz Sürücüsü", cost: 4, type: "troop", rarity: "rare", arena: 4, image: "hog-rider" },
+            { id: 32, name: "Buz Ruhu", cost: 1, type: "troop", rarity: "rare", arena: 8, image: "ice-spirit" },
+            { id: 33, name: "Cehennem Kulesi", cost: 5, type: "building", rarity: "rare", arena: 5, image: "inferno-tower" },
+            { id: 34, name: "Mini P.E.K.K.A", cost: 4, type: "troop", rarity: "rare", arena: 3, image: "mini-pekka" },
+            { id: 35, name: "Ayna", cost: 1, type: "spell", rarity: "rare", arena: 5, image: "mirror" },
+            { id: 36, name: "Prens", cost: 5, type: "troop", rarity: "rare", arena: 4, image: "prince" },
+            { id: 37, name: "Haydudak", cost: 5, type: "troop", rarity: "rare", arena: 12, image: "rascal" },
+            { id: 38, name: "Roket", cost: 6, type: "spell", rarity: "rare", arena: 3, image: "rocket" },
+            { id: 39, name: "Kraliyet Devi", cost: 6, type: "troop", rarity: "rare", arena: 7, image: "royal-giant" },
+            { id: 40, name: "Tesla", cost: 4, type: "building", rarity: "rare", arena: 4, image: "tesla" },
+            { id: 41, name: "Kütük", cost: 2, type: "spell", rarity: "rare", arena: 6, image: "the-log" },
+            { id: 42, name: "Kasırga", cost: 3, type: "spell", rarity: "rare", arena: 9, image: "tornado" },
+            { id: 43, name: "X-Oku", cost: 6, type: "building", rarity: "rare", arena: 6, image: "x-bow" },
+            { id: 44, name: "Zehir", cost: 4, type: "spell", rarity: "rare", arena: 5, image: "poison" },
+            
+            // Epic cards
+            { id: 45, name: "Barbar Fıçısı", cost: 2, type: "spell", rarity: "epic", arena: 10, image: "barbarian-barrel" },
+            { id: 46, name: "Savaş Koçu", cost: 4, type: "troop", rarity: "epic", arena: 9, image: "battle-ram" },
+            { id: 47, name: "Topçu", cost: 5, type: "troop", rarity: "epic", arena: 8, image: "bowler" },
+            { id: 48, name: "Klon", cost: 3, type: "spell", rarity: "epic", arena: 11, image: "clone" },
+            { id: 49, name: "Elektrik Büyücüsü", cost: 5, type: "troop", rarity: "epic", arena: 11, image: "electro-wizard" },
+            { id: 50, name: "Donma", cost: 4, type: "spell", rarity: "epic", arena: 6, image: "freeze" },
+            { id: 51, name: "Dev Kar Topu", cost: 2, type: "spell", rarity: "epic", arena: 10, image: "giant-snowball" },
+            { id: 52, name: "Golem", cost: 8, type: "troop", rarity: "epic", arena: 5, image: "golem" },
+            { id: 53, name: "Mezarlık", cost: 5, type: "spell", rarity: "epic", arena: 9, image: "graveyard" },
+            { id: 54, name: "Muhafızlar", cost: 3, type: "troop", rarity: "epic", arena: 7, image: "guards" },
+            { id: 55, name: "Avcı", cost: 4, type: "troop", rarity: "epic", arena: 10, image: "hunter" },
+            { id: 56, name: "Buz Golemi", cost: 2, type: "troop", rarity: "epic", arena: 8, image: "ice-golem" },
+            { id: 57, name: "Buz Büyücüsü", cost: 3, type: "troop", rarity: "epic", arena: 5, image: "ice-wizard" },
+            { id: 58, name: "Lava Köpeği", cost: 7, type: "troop", rarity: "epic", arena: 6, image: "lava-hound" },
+            { id: 59, name: "Yıldırım", cost: 6, type: "spell", rarity: "epic", arena: 7, image: "lightning" },
+            { id: 60, name: "Oduncu", cost: 4, type: "troop", rarity: "epic", arena: 8, image: "lumberjack" },
+            { id: 61, name: "Mega Minyon", cost: 3, type: "troop", rarity: "epic", arena: 7, image: "mega-minion" },
+            { id: 62, name: "Madenci", cost: 3, type: "troop", rarity: "epic", arena: 7, image: "miner" },
+            { id: 63, name: "Anne Cadı", cost: 4, type: "troop", rarity: "epic", arena: 12, image: "mother-witch" },
+            { id: 64, name: "Gece Cadısı", cost: 4, type: "troop", rarity: "epic", arena: 10, image: "night-witch" },
+            { id: 65, name: "P.E.K.K.A", cost: 7, type: "troop", rarity: "epic", arena: 6, image: "pekka" },
+            { id: 66, name: "Kraliyet Hayaleti", cost: 3, type: "troop", rarity: "epic", arena: 11, image: "royal-ghost" },
+            { id: 67, name: "Sparkey", cost: 6, type: "troop", rarity: "epic", arena: 8, image: "sparky" },
+            { id: 68, name: "Duvar Yıkıcılar", cost: 2, type: "troop", rarity: "epic", arena: 9, image: "wall-breakers" },
+            { id: 69, name: "Cadı", cost: 5, type: "troop", rarity: "epic", arena: 3, image: "witch" },
+            { id: 70, name: "Balon", cost: 5, type: "troop", rarity: "epic", arena: 4, image: "balloon" },
+            
+            // Legendary cards
+            { id: 71, name: "Haydut", cost: 3, type: "troop", rarity: "legendary", arena: 10, image: "bandit" },
+            { id: 72, name: "Toplu Taşıyıcı", cost: 4, type: "troop", rarity: "legendary", arena: 12, image: "cannon-cart" },
+            { id: 73, name: "Elektrik Ejderhası", cost: 5, type: "troop", rarity: "legendary", arena: 12, image: "electro-dragon" },
+            { id: 74, name: "Balıkçı", cost: 3, type: "troop", rarity: "legendary", arena: 12, image: "fisherman" },
+            { id: 75, name: "Uçan Makine", cost: 4, type: "troop", rarity: "legendary", arena: 12, image: "flying-machine" },
+            { id: 76, name: "Cehennem Ejderhası", cost: 4, type: "troop", rarity: "legendary", arena: 10, image: "inferno-dragon" },
+            { id: 77, name: "Büyülü Okçu", cost: 4, type: "troop", rarity: "legendary", arena: 10, image: "magic-archer" },
+            { id: 78, name: "Mega Şövalye", cost: 7, type: "troop", rarity: "legendary", arena: 10, image: "mega-knight" },
+            { id: 79, name: "Havan", cost: 4, type: "building", rarity: "legendary", arena: 6, image: "mortar" },
+            { id: 80, name: "Prenses", cost: 3, type: "troop", rarity: "legendary", arena: 7, image: "princess" },
+            { id: 81, name: "Kraliyet Hayaleti", cost: 3, type: "troop", rarity: "legendary", arena: 10, image: "royal-ghost" },
+            { id: 82, name: "Altın Şövalye", cost: 4, type: "troop", rarity: "legendary", arena: 13, image: "golden-knight" },
+            { id: 83, name: "Koç Sürücüsü", cost: 5, type: "troop", rarity: "legendary", arena: 12, image: "ram-rider" },
+            { id: 84, name: "İskelet Kralı", cost: 4, type: "troop", rarity: "legendary", arena: 14, image: "skeleton-king" },
+            
+            // Champion cards
+            { id: 85, name: "Okçu Kraliçe", cost: 5, type: "troop", rarity: "champion", arena: 14, image: "archer-queen" },
+            { id: 86, name: "Altın Şövalye", cost: 4, type: "troop", rarity: "champion", arena: 13, image: "golden-knight" },
+            { id: 87, name: "İskelet Kralı", cost: 4, type: "troop", rarity: "champion", arena: 14, image: "skeleton-king" }
+        ];
+
+        // 100+ Genişletilmiş Meta Deck Veritabanı
+        const metaDecks = {
+            // MADENCİ DECK'LERİ
+            minerPoison: {
+                name: "Madenci Zehir Kontrol",
+                description: "Madenci ile sürekli baskı kuran elite deck",
+                keyCards: ["Madenci", "Zehir", "Cehennem Kulesi", "Buz Ruhu"],
+                averageElixir: 3.8,
+                difficulty: "medium",
+                strategy: "Madenci ile kule hasarı alın. Zehir ile grup birliklerini temizleyin. Cehennem Kulesi ile büyük tankları durdurun. Buz Ruhu ile destek sağlayın.",
+                synergies: ["Madenci + Zehir", "Zehir + Cehennem Kulesi", "Madenci + Buz Ruhu"],
+                decks: [
+                    { arena: 7, cards: ["Madenci", "Zehir", "Cehennem Kulesi", "Buz Ruhu", "İskeletler", "Şok", "Mızrak Goblinleri", "Şövalye"] },
+                    { arena: 9, cards: ["Madenci", "Zehir", "Cehennem Kulesi", "Buz Ruhu", "Yarasalar", "Şok", "Kütük", "Valküre"] },
+                    { arena: 11, cards: ["Madenci", "Zehir", "Cehennem Kulesi", "Buz Ruhu", "Yarasalar", "Şok", "Kütük", "Elektrik Büyücüsü"] }
+                ]
+            },
+            minerWallBreakers: {
+                name: "Madenci Duvar Yıkıcılar",
+                description: "Madenci ve Duvar Yıkıcılar ile hızlı kupa basan deck",
+                keyCards: ["Madenci", "Duvar Yıkıcılar", "Zehir", "Buz Ruhu"],
+                averageElixir: 3.6,
+                difficulty: "hard",
+                strategy: "Madenci ile kule hasarı alın. Duvar Yıkıcılar ile binaları ve kuleyi hızla yok edin. Zehir ile grup birliklerini temizleyin.",
+                synergies: ["Madenci + Duvar Yıkıcılar", "Duvar Yıkıcılar + Zehir", "Madenci + Buz Ruhu"],
+                decks: [
+                    { arena: 9, cards: ["Madenci", "Duvar Yıkıcılar", "Zehir", "Buz Ruhu", "İskeletler", "Şok", "Mızrak Goblinleri", "Şövalye"] },
+                    { arena: 11, cards: ["Madenci", "Duvar Yıkıcılar", "Zehir", "Buz Ruhu", "Yarasalar", "Şok", "Kütük", "Valküre"] },
+                    { arena: 13, cards: ["Madenci", "Duvar Yıkıcılar", "Zehir", "Buz Ruhu", "Yarasalar", "Şok", "Kütük", "Elektrik Büyücüsü"] }
+                ]
+            },
+            minerControl: {
+                name: "Madenci Kontrol",
+                description: "Madenci ile alan kontrolü yapan deck",
+                keyCards: ["Madenci", "Cehennem Kulesi", "Şok", "Buz Ruhu"],
+                averageElixir: 3.4,
+                difficulty: "medium",
+                strategy: "Madenci ile sürekli baskı yapın. Cehennem Kulesi ile büyük tankları durdurun. Şok ve Buz Ruhu ile küçük birlikleri temizleyin.",
+                synergies: ["Madenci + Cehennem Kulesi", "Cehennem Kulesi + Şok", "Madenci + Buz Ruhu"],
+                decks: [
+                    { arena: 7, cards: ["Madenci", "Cehennem Kulesi", "Şok", "Buz Ruhu", "İskeletler", "Mızrak Goblinleri", "Top", "Şövalye"] },
+                    { arena: 9, cards: ["Madenci", "Cehennem Kulesi", "Şok", "Buz Ruhu", "Yarasalar", "Mızrak Goblinleri", "Tesla", "Valküre"] },
+                    { arena: 11, cards: ["Madenci", "Cehennem Kulesi", "Şok", "Buz Ruhu", "Yarasalar", "Mızrak Goblinleri", "Tesla", "Elektrik Büyücüsü"] }
+                ]
+            },
+            // HOG CYCLE DECK'LERİ
+            hogCycle: {
+                name: "Hog Cycle",
+                description: "Hızlı elixir döngüsü ile sürekli baskı kuran agresif deck",
+                keyCards: ["Domuz Sürücüsü", "Buz Ruhu", "Kütük", "Top"],
+                averageElixir: 3.2,
+                difficulty: "medium",
+                strategy: "Domuz Sürücüsü ile sürekli kule baskısı yapın. Elixiri düşük kartlarla savunma yaparak elixir avantajı sağlayın. Kütük ile küçük birlikleri temizleyin.",
+                synergies: ["Domuz Sürücüsü + Buz Ruhu", "Top + Şok", "Buz Ruhu + İskeletler"],
+                decks: [
+                    { arena: 4, cards: ["Domuz Sürücüsü", "Buz Ruhu", "Kütük", "Top", "İskeletler", "Şok", "Ateş Topu", "Tüfekçi"] },
+                    { arena: 6, cards: ["Domuz Sürücüsü", "Buz Ruhu", "Kütük", "Top", "İskeletler", "Şok", "Ateş Topu", "Buz Büyücüsü"] },
+                    { arena: 8, cards: ["Domuz Sürücüsü", "Buz Ruhu", "Kütük", "Tesla", "Yarasalar", "Şok", "Ateş Topu", "Tüfekçi"] }
+                ]
+            },
+            hogIceSpirit: {
+                name: "Hog Buz Ruhu",
+                description: "Buz Ruhu ile desteklenen Hog Cycle deck",
+                keyCards: ["Domuz Sürücüsü", "Buz Ruhu", "Şok", "İskeletler"],
+                averageElixir: 3.0,
+                difficulty: "easy",
+                strategy: "Domuz Sürücüsü ile baskı yapın. Buz Ruhu ile hem destek hem de sürü kontrolü yapın. Şok ile küçük birlikleri temizleyin.",
+                synergies: ["Domuz Sürücüsü + Buz Ruhu", "Buz Ruhu + Şok", "Domuz Sürücüsü + İskeletler"],
+                decks: [
+                    { arena: 8, cards: ["Domuz Sürücüsü", "Buz Ruhu", "Şok", "İskeletler", "Mızrak Goblinleri", "Top", "Tesla", "Şövalye"] },
+                    { arena: 10, cards: ["Domuz Sürücüsü", "Buz Ruhu", "Şok", "İskeletler", "Mızrak Goblinleri", "Kütük", "Tesla", "Valküre"] },
+                    { arena: 12, cards: ["Domuz Sürücüsü", "Buz Ruhu", "Şok", "İskeletler", "Mızrak Goblinleri", "Kütük", "Tesla", "Elektrik Büyücüsü"] }
+                ]
+            },
+            // LOG BAIT DECK'LERİ
+            logBait: {
+                name: "Kütük Tuzak",
+                description: "Rakibin Kütük kullanmasını zorlaştıran ve buna karşı avantaj sağlayan deck",
+                keyCards: ["Goblin Fıçısı", "Prenses", "Şövalye", "Cehennem Kulesi"],
+                averageElixir: 3.3,
+                difficulty: "medium",
+                strategy: "Goblin Fıçısı ile sürekli baskı yapın. Prenses ile hava savunması yapın. Rakip Kütük kullandığında Goblin Fıçısı ile cevap verin.",
+                synergies: ["Goblin Fıçısı + Prenses", "Şövalye + Goblin Fıçısı", "Cehennem Kulesi + Şok"],
+                decks: [
+                    { arena: 7, cards: ["Goblin Fıçısı", "Prenses", "Şövalye", "Cehennem Kulesi", "Goblinler", "Buz Ruhu", "Kütük", "Şok"] },
+                    { arena: 9, cards: ["Goblin Fıçısı", "Prenses", "Şövalye", "Cehennem Kulesi", "Goblinler", "Buz Ruhu", "Kütük", "Kasırga"] },
+                    { arena: 11, cards: ["Goblin Fıçısı", "Prenses", "Şövalye", "Cehennem Kulesi", "Goblinler", "Buz Ruhu", "Kütük", "Elektrik Büyücüsü"] }
+                ]
+            },
+            // GRAVEYARD DECK'LERİ
+            graveyardLava: {
+                name: "Mezarlık Lava",
+                description: "Lava Köpeği ve Mezarlık ile hava odaklı saldırı deck",
+                keyCards: ["Mezarlık", "Lava Köpeği", "Gece Cadısı", "Buz Ruhu"],
+                averageElixir: 4.0,
+                difficulty: "hard",
+                strategy: "Lava Köpeği ile hava baskısı yapın. Arkasına Mezarlık atarak kule hasarı alın. Gece Cadısı ile destek sağlayın.",
+                synergies: ["Lava Köpeği + Mezarlık", "Gece Cadısı + Mezarlık", "Buz Ruhu + Yarasalar"],
+                decks: [
+                    { arena: 9, cards: ["Mezarlık", "Lava Köpeği", "Gece Cadısı", "Buz Ruhu", "Yarasalar", "Şok", "Zehir", "İskeletler"] },
+                    { arena: 10, cards: ["Mezarlık", "Lava Köpeği", "Gece Cadısı", "Buz Ruhu", "Yarasalar", "Şok", "Zehir", "Mezar Taşı"] },
+                    { arena: 12, cards: ["Mezarlık", "Lava Köpeği", "Gece Cadısı", "Buz Ruhu", "Yarasalar", "Şok", "Zehir", "Toplu Taşıyıcı"] }
+                ]
+            },
+            // BRIDGE SPAM DECK'LERİ
+            bridgeSpam: {
+                name: "Köprü Saldırısı",
+                description: "Köprüden hızlı birlikler göndererek baskı kuran agresif deck",
+                keyCards: ["Haydut", "Savaş Koçu", "Gece Cadısı", "Buz Ruhu"],
+                averageElixir: 3.8,
+                difficulty: "hard",
+                strategy: "Köprüden Haydut ve Savaş Koçu göndererek hızlı baskı kurun. Gece Cadısı ile destek sağlayın. Elixiri düşük kartlarla savunma yaparak karşı ataklar için elixir biriktirin.",
+                synergies: ["Haydut + Savaş Koçu", "Gece Cadısı + Buz Ruhu", "Savaş Koçu + Öfke"],
+                decks: [
+                    { arena: 10, cards: ["Haydut", "Savaş Koçu", "Gece Cadısı", "Buz Ruhu", "Şok", "Kütük", "Cehennem Ejderhası", "Duvar Yıkıcılar"] },
+                    { arena: 11, cards: ["Haydut", "Savaş Koçu", "Gece Cadısı", "Buz Ruhu", "Şok", "Kütük", "Cehennem Ejderhası", "Elektrik Büyücüsü"] },
+                    { arena: 12, cards: ["Haydut", "Savaş Koçu", "Gece Cadısı", "Buz Ruhu", "Şok", "Kütük", "Cehennem Ejderhası", "Koç Sürücüsü"] }
+                ]
+            },
+            // X-BOW DECK'LERİ
+            xbowCycle: {
+                name: "X-Oku Cycle",
+                description: "X-Oku ile kuleyi yok etmeye odaklanan kontrol deck'i",
+                keyCards: ["X-Oku", "Tesla", "Buz Ruhu", "İskeletler"],
+                averageElixir: 3.5,
+                difficulty: "hard",
+                strategy: "X-Oku'yu koruyarak rakip kuleye yerleştirin. Tesla ve İskeletler ile X-Oku'yu koruyun. Elixiri yöneterek sürekli baskı kurun.",
+                synergies: ["X-Oku + Tesla", "Buz Ruhu + İskeletler", "Kütük + Şok"],
+                decks: [
+                    { arena: 6, cards: ["X-Oku", "Tesla", "Buz Ruhu", "İskeletler", "Kütük", "Şok", "Dev Kar Topu", "Şövalye"] },
+                    { arena: 8, cards: ["X-Oku", "Tesla", "Buz Ruhu", "Yarasalar", "Kütük", "Şok", "Dev Kar Topu", "Valküre"] },
+                    { arena: 10, cards: ["X-Oku", "Tesla", "Buz Ruhu", "Yarasalar", "Kütük", "Barbar Fıçısı", "Dev Kar Topu", "Valküre"] }
+                ]
+            },
+            // GOLEM BEATDOWN DECK'LERİ
+            golemBeatdown: {
+                name: "Golem Beatdown",
+                description: "Golem ile yavaş ama güçlü saldırı yapan deck",
+                keyCards: ["Golem", "Mega Minyon", "Tüfekçi", "Yıldırım"],
+                averageElixir: 4.3,
+                difficulty: "hard",
+                strategy: "Golem'i arkada destek birlikleriyle birlikte gönderin. Yıldırım ile büyük tehditleri temizleyin. Tüfekçi ve Mega Minyon ile hava savunması yapın.",
+                synergies: ["Golem + Mega Minyon", "Tüfekçi + Yıldırım", "Golem + Buz Ruhu"],
+                decks: [
+                    { arena: 5, cards: ["Golem", "Mega Minyon", "Tüfekçi", "Yıldırım", "Buz Ruhu", "Şok", "Ateş Topu", "İskeletler"] },
+                    { arena: 7, cards: ["Golem", "Mega Minyon", "Tüfekçi", "Yıldırım", "Buz Ruhu", "Şok", "Ateş Topu", "Buz Büyücüsü"] },
+                    { arena: 9, cards: ["Golem", "Mega Minyon", "Tüfekçi", "Yıldırım", "Buz Ruhu", "Şok", "Ateş Topu", "Elektrik Büyücüsü"] }
+                ]
+            },
+            // LAVA HOUND DECK'LERİ
+            lavaloon: {
+                name: "Lavaloon",
+                description: "Lava Köpeği ve Balon ile hava odaklı saldırı deck'i",
+                keyCards: ["Lava Köpeği", "Balon", "Buz Ruhu", "Şok"],
+                averageElixir: 4.3,
+                difficulty: "hard",
+                strategy: "Lava Köpeği ile hava baskısı yapın. Arkasına Balon yerleştirerek güçlü kombinasyon oluşturun. Buz Ruhu ile destek sağlayın.",
+                synergies: ["Lava Köpeği + Balon", "Balon + Buz Ruhu", "Lava Köpeği + Şok"],
+                decks: [
+                    { arena: 6, cards: ["Lava Köpeği", "Balon", "Buz Ruhu", "Şok", "İskeletler", "Mızrak Goblinleri", "Ateş Topu", "Tüfekçi"] },
+                    { arena: 8, cards: ["Lava Köpeği", "Balon", "Buz Ruhu", "Şok", "İskeletler", "Mızrak Goblinleri", "Ateş Topu", "Buz Büyücüsü"] },
+                    { arena: 10, cards: ["Lava Köpeği", "Balon", "Buz Ruhu", "Şok", "İskeletler", "Mızrak Goblinleri", "Ateş Topu", "Elektrik Büyücüsü"] }
+                ]
+            },
+            // P.E.K.K.A BRIDGE SPAM DECK'LERİ
+            pekkaBridgeSpam: {
+                name: "P.E.K.K.A Köprü Saldırısı",
+                description: "P.E.K.K.A ile güçlü kombinasyonlar oluşturan köprü saldırı deck'i",
+                keyCards: ["P.E.K.K.A", "Elektrik Büyücüsü", "Haydut", "Savaş Koçu"],
+                averageElixir: 4.1,
+                difficulty: "hard",
+                strategy: "P.E.K.K.A'yı doğru zamanda kullanın. Elektrik Büyücüsü ile destek sağlayın. Haydut ve Savaş Koçu ile hızlı baskılar yapın.",
+                synergies: ["P.E.K.K.A + Elektrik Büyücüsü", "Haydut + Savaş Koçu", "P.E.K.K.A + Şok"],
+                decks: [
+                    { arena: 11, cards: ["P.E.K.K.A", "Elektrik Büyücüsü", "Haydut", "Savaş Koçu", "Şok", "Kütük", "Buz Ruhu", "İskeletler"] },
+                    { arena: 12, cards: ["P.E.K.K.A", "Elektrik Büyücüsü", "Haydut", "Savaş Koçu", "Şok", "Kütük", "Buz Ruhu", "Toplu Taşıyıcı"] },
+                    { arena: 13, cards: ["P.E.K.K.A", "Elektrik Büyücüsü", "Haydut", "Savaş Koçu", "Şok", "Kütük", "Buz Ruhu", "Altın Şövalye"] }
+                ]
+            },
+            // GIANT DOUBLE PRINCE DECK'LERİ
+            giantDoublePrince: {
+                name: "Dev Çift Prens",
+                description: "Dev tank arkasında iki prensle kupa basan güçlü deck",
+                keyCards: ["Dev", "Prens", "Karanlık Prens", "Büyücü"],
+                averageElixir: 4.2,
+                difficulty: "medium",
+                strategy: "Dev ile tank oluşturun. Arkasına Prens ve Karanlık Prens yerleştirerek güçlü kombinasyon oluşturun. Büyücü ile hava savunması yapın.",
+                synergies: ["Dev + Prens", "Prens + Karanlık Prens", "Büyücü + Dev"],
+                decks: [
+                    { arena: 4, cards: ["Dev", "Prens", "Karanlık Prens", "Büyücü", "Oklar", "İskeletler", "Mini P.E.K.K.A", "Mızrak Goblinleri"] },
+                    { arena: 7, cards: ["Dev", "Prens", "Karanlık Prens", "Büyücü", "Oklar", "İskeletler", "Mini P.E.K.K.A", "Buz Ruhu"] },
+                    { arena: 9, cards: ["Dev", "Prens", "Karanlık Prens", "Büyücü", "Oklar", "İskeletler", "Mini P.E.K.K.A", "Kasırga"] }
+                ]
+            },
+            // ROYAL GIANT DECK'LERİ
+            royalGiant: {
+                name: "Kraliyet Devi",
+                description: "Kraliyet Devi ile kuleyi uzaktan yok etmeye odaklanan deck",
+                keyCards: ["Kraliyet Devi", "Tüfekçi", "Minyonlar", "Ateş Topu"],
+                averageElixir: 3.9,
+                difficulty: "easy",
+                strategy: "Kraliyet Devi ile kule baskısı yapın. Tüfekçi ve Minyonlar ile destek sağlayın. Ateş Topu ile büyük tehditleri temizleyin.",
+                synergies: ["Kraliyet Devi + Tüfekçi", "Tüfekçi + Minyonlar", "Kraliyet Devi + Ateş Topu"],
+                decks: [
+                    { arena: 7, cards: ["Kraliyet Devi", "Tüfekçi", "Minyonlar", "Ateş Topu", "İskeletler", "Şok", "Mızrak Goblinleri", "Şövalye"] },
+                    { arena: 9, cards: ["Kraliyet Devi", "Tüfekçi", "Minyonlar", "Ateş Topu", "İskeletler", "Şok", "Mızrak Goblinleri", "Buz Ruhu"] },
+                    { arena: 11, cards: ["Kraliyet Devi", "Tüfekçi", "Minyonlar", "Ateş Topu", "İskeletler", "Şok", "Mızrak Goblinleri", "Kasırga"] }
+                ]
+            },
+            // MEGA KNIGHT DECK'LERİ
+            megaKnightControl: {
+                name: "Mega Şövalye Kontrol",
+                description: "Mega Şövalye ile alan kontrolü yapan deck",
+                keyCards: ["Mega Şövalye", "Buz Ruhu", "Şok", "İskeletler"],
+                averageElixir: 3.7,
+                difficulty: "medium",
+                strategy: "Mega Şövalye ile alan kontrolü yapın. Buz Ruhu ve Şok ile küçük birlikleri temizleyin. İskeletler ile destek sağlayın.",
+                synergies: ["Mega Şövalye + Buz Ruhu", "Buz Ruhu + Şok", "Mega Şövalye + İskeletler"],
+                decks: [
+                    { arena: 10, cards: ["Mega Şövalye", "Buz Ruhu", "Şok", "İskeletler", "Mızrak Goblinleri", "Kütük", "Top", "Şövalye"] },
+                    { arena: 12, cards: ["Mega Şövalye", "Buz Ruhu", "Şok", "Yarasalar", "Mızrak Goblinleri", "Kütük", "Tesla", "Valküre"] },
+                    { arena: 13, cards: ["Mega Şövalye", "Buz Ruhu", "Şok", "Yarasalar", "Mızrak Goblinleri", "Kütük", "Tesla", "Elektrik Büyücüsü"] }
+                ]
+            },
+            // SPARKY DECK'LERİ
+            sparkyControl: {
+                name: "Sparkey Kontrol",
+                description: "Sparkey ile büyük hasar veren kontrol deck'i",
+                keyCards: ["Sparkey", "Buz Golemi", "Elektrik Büyücüsü", "Şok"],
+                averageElixir: 4.0,
+                difficulty: "medium",
+                strategy: "Sparkey'yi koruyarak rakip kuleye yerleştirin. Buz Golemi ile Sparkey'yi koruyun. Elektrik Büyücüsü ile destek sağlayın.",
+                synergies: ["Sparkey + Buz Golemi", "Elektrik Büyücüsü + Şok", "Buz Golemi + Yarasalar"],
+                decks: [
+                    { arena: 8, cards: ["Sparkey", "Buz Golemi", "Elektrik Büyücüsü", "Şok", "Yarasalar", "İskeletler", "Ateş Topu", "Tüfekçi"] },
+                    { arena: 10, cards: ["Sparkey", "Buz Golemi", "Elektrik Büyücüsü", "Şok", "Yarasalar", "İskeletler", "Ateş Topu", "Buz Büyücüsü"] },
+                    { arena: 12, cards: ["Sparkey", "Buz Golemi", "Elektrik Büyücüsü", "Şok", "Yarasalar", "İskeletler", "Ateş Topu", "Elektrik Büyücüsü"] }
+                ]
+            },
+            // THREE MUSKETEERS DECK'LERİ
+            threeMusketeers: {
+                name: "Üç Tüfekçi",
+                description: "Üç Tüfekçi kartıyla güçlü saldırılar yapan deck",
+                keyCards: ["Üç Tüfekçi", "P.E.K.K.A", "Elektrik Büyücüsü", "Şok"],
+                averageElixir: 4.2,
+                difficulty: "hard",
+                strategy: "Üç Tüfekçi'yi doğru zamanda kullanarak kule hasarı alın. P.E.K.K.A ile tank oluşturun. Elektrik Büyücüsü ile destek sağlayın.",
+                synergies: ["Üç Tüfekçi + P.E.K.K.A", "Elektrik Büyücüsü + Şok", "P.E.K.K.A + Buz Ruhu"],
+                decks: [
+                    { arena: 5, cards: ["Üç Tüfekçi", "P.E.K.K.A", "Elektrik Büyücüsü", "Şok", "Buz Ruhu", "İskeletler", "Ateş Topu", "Tüfekçi"] },
+                    { arena: 7, cards: ["Üç Tüfekçi", "P.E.K.K.A", "Elektrik Büyücüsü", "Şok", "Buz Ruhu", "İskeletler", "Ateş Topu", "Buz Büyücüsü"] },
+                    { arena: 9, cards: ["Üç Tüfekçi", "P.E.K.K.A", "Elektrik Büyücüsü", "Şok", "Buz Ruhu", "İskeletler", "Ateş Topu", "Elektrik Büyücüsü"] }
+                ]
+            },
+            // MORTAR DECK'LERİ
+            mortarCycle: {
+                name: "Havan Cycle",
+                description: "Havan ile kuleyi uzaktan yok etmeye odaklanan kontrol deck'i",
+                keyCards: ["Havan", "Tesla", "Buz Ruhu", "İskeletler"],
+                averageElixir: 3.4,
+                difficulty: "hard",
+                strategy: "Havan'ı koruyarak rakip kuleye yerleştirin. Tesla ve İskeletler ile Havan'ı koruyun. Elixiri yöneterek sürekli baskı kurun.",
+                synergies: ["Havan + Tesla", "Buz Ruhu + İskeletler", "Kütük + Şok"],
+                decks: [
+                    { arena: 6, cards: ["Havan", "Tesla", "Buz Ruhu", "İskeletler", "Kütük", "Şok", "Dev Kar Topu", "Şövalye"] },
+                    { arena: 8, cards: ["Havan", "Tesla", "Buz Ruhu", "Yarasalar", "Kütük", "Şok", "Dev Kar Topu", "Valküre"] },
+                    { arena: 10, cards: ["Havan", "Tesla", "Buz Ruhu", "Yarasalar", "Kütük", "Barbar Fıçısı", "Dev Kar Topu", "Valküre"] }
+                ]
+            },
+            // FISHERMAN DECK'LERİ
+            fishermanControl: {
+                name: "Balıkçı Kontrol",
+                description: "Balıkçı ile rakip birliklerini kontrol eden deck",
+                keyCards: ["Balıkçı", "Cehennem Kulesi", "Şok", "Buz Ruhu"],
+                averageElixir: 3.6,
+                difficulty: "hard",
+                strategy: "Balıkçı ile rakip birliklerini çekerek kontrol edin. Cehennem Kulesi ile büyük tankları durdurun. Şok ve Buz Ruhu ile küçük birlikleri temizleyin.",
+                synergies: ["Balıkçı + Cehennem Kulesi", "Cehennem Kulesi + Şok", "Balıkçı + Buz Ruhu"],
+                decks: [
+                    { arena: 12, cards: ["Balıkçı", "Cehennem Kulesi", "Şok", "Buz Ruhu", "İskeletler", "Mızrak Goblinleri", "Ateş Topu", "Tüfekçi"] },
+                    { arena: 13, cards: ["Balıkçı", "Cehennem Kulesi", "Şok", "Buz Ruhu", "İskeletler", "Mızrak Goblinleri", "Ateş Topu", "Buz Büyücüsü"] },
+                    { arena: 14, cards: ["Balıkçı", "Cehennem Kulesi", "Şok", "Buz Ruhu", "İskeletler", "Mızrak Goblinleri", "Ateş Topu", "Elektrik Büyücüsü"] }
+                ]
+            },
+            // MOTHER WITCH DECK'LERİ
+            motherWitchControl: {
+                name: "Anne Cadı Kontrol",
+                description: "Anne Cadı ile domuzları kontrol eden deck",
+                keyCards: ["Anne Cadı", "Dev", "Tüfekçi", "Ateş Topu"],
+                averageElixir: 4.0,
+                difficulty: "medium",
+                strategy: "Anne Cadı ile rakip birliklerini domuza çevirin. Dev ile tank oluşturun. Tüfekçi ile hava savunması yapın.",
+                synergies: ["Anne Cadı + Dev", "Anne Cadı + Tüfekçi", "Dev + Ateş Topu"],
+                decks: [
+                    { arena: 12, cards: ["Anne Cadı", "Dev", "Tüfekçi", "Ateş Topu", "İskeletler", "Şok", "Mızrak Goblinleri", "Şövalye"] },
+                    { arena: 13, cards: ["Anne Cadı", "Dev", "Tüfekçi", "Ateş Topu", "İskeletler", "Şok", "Mızrak Goblinleri", "Buz Ruhu"] },
+                    { arena: 14, cards: ["Anne Cadı", "Dev", "Tüfekçi", "Ateş Topu", "İskeletler", "Şok", "Mızrak Goblinleri", "Kasırga"] }
+                ]
+            },
+            // EKSTRA DECK VARYASYONLARI
+            hog2point6: {
+                name: "2.6 Hog Cycle",
+                description: "En düşük ortalama elixir'e sahip klasik Hog deck",
+                keyCards: ["Domuz Sürücüsü", "Şok", "Buz Ruhu", "İskeletler"],
+                averageElixir: 2.6,
+                difficulty: "hard",
+                strategy: "Elixiri sürekli olarak 10'da tutun. Rakibin her hamlesine en uygun kartla cevap vererek elixir avantajı sağlayın ve Domuz Sürücüsü ile baskı kurun.",
+                synergies: ["Domuz Sürücüsü + Buz Ruhu", "İskeletler + Şok", "Top + Şok"],
+                decks: [
+                    { arena: 4, cards: ["Domuz Sürücüsü", "Şok", "Buz Ruhu", "İskeletler", "Mızrak Goblinleri", "Top", "Ateş Topu", "Tüfekçi"] },
+                    { arena: 6, cards: ["Domuz Sürücüsü", "Şok", "Buz Ruhu", "İskeletler", "Mızrak Goblinleri", "Top", "Ateş Topu", "Buz Büyücüsü"] },
+                    { arena: 8, cards: ["Domuz Sürücüsü", "Şok", "Buz Ruhu", "İskeletler", "Mızrak Goblinleri", "Tesla", "Ateş Topu", "Tüfekçi"] }
+                ]
+            },
+            graveyardGiant: {
+                name: "Mezarlık Dev",
+                description: "Dev tank arkasına Mezarlık atarak oynanan deck",
+                keyCards: ["Mezarlık", "Dev", "Buz Golemi", "Şok"],
+                averageElixir: 3.8,
+                difficulty: "medium",
+                strategy: "Dev'i gönderin ve rakip savunmaya başladığında arkasına Mezarlık atın. Buz Golemi ile destek sağlayın ve küçük tehditleri Şok ile temizleyin.",
+                synergies: ["Dev + Mezarlık", "Buz Golemi + Mezarlık", "Dev + Şok"],
+                decks: [
+                    { arena: 1, cards: ["Mezarlık", "Dev", "Buz Golemi", "Şok", "İskeletler", "Mızrak Goblinleri", "Ateş Topu", "Şövalye"] },
+                    { arena: 3, cards: ["Mezarlık", "Dev", "Buz Golemi", "Şok", "İskeletler", "Mızrak Goblinleri", "Kütük", "Valküre"] },
+                    { arena: 5, cards: ["Mezarlık", "Dev", "Buz Golemi", "Şok", "İskeletler", "Mızrak Goblinleri", "Kütük", "Elektrik Büyücüsü"] }
+                ]
+            },
+            golemNightWitch: {
+                name: "Golem Gece Cadısı",
+                description: "Gece Cadısı'nın yarattığı yarasa sürüsüyle desteklenen Golem deck'i",
+                keyCards: ["Golem", "Gece Cadısı", "Buz Ruhu", "Şok"],
+                averageElixir: 4.1,
+                difficulty: "hard",
+                strategy: "Golem'i gönderin ve arkasına Gece Cadısı yerleştirin. Çıkan yarasa sürüsü hem Golem'i korur hem de kuleye hasar verir.",
+                synergies: ["Golem + Gece Cadısı", "Gece Cadısı + Buz Ruhu", "Golem + Şok"],
+                decks: [
+                    { arena: 10, cards: ["Golem", "Gece Cadısı", "Buz Ruhu", "Şok", "İskeletler", "Mızrak Goblinleri", "Ateş Topu", "Şövalye"] },
+                    { arena: 12, cards: ["Golem", "Gece Cadısı", "Buz Ruhu", "Şok", "İskeletler", "Mızrak Goblinleri", "Kütük", "Valküre"] },
+                    { arena: 14, cards: ["Golem", "Gece Cadısı", "Buz Ruhu", "Şok", "İskeletler", "Mızrak Goblinleri", "Kütük", "Elektrik Büyücüsü"] }
+                ]
+            },
+            minerBats: {
+                name: "Madenci Yarasalar",
+                description: "Yarasalar ile hem hava hem de kara savunması sağlayan Madenci deck'i",
+                keyCards: ["Madenci", "Yarasalar", "Zehir", "Şok"],
+                averageElixir: 3.5,
+                difficulty: "medium",
+                strategy: "Madenci ile sürekli baskı yapın. Yarasalar ile hem hava tehditlerini savunun hem de Madenci'yi destekleyin. Zehir ile grup birliklerini temizleyin.",
+                synergies: ["Madenci + Yarasalar", "Yarasalar + Zehir", "Madenci + Şok"],
+                decks: [
+                    { arena: 8, cards: ["Madenci", "Yarasalar", "Zehir", "Şok", "İskeletler", "Mızrak Goblinleri", "Top", "Şövalye"] },
+                    { arena: 10, cards: ["Madenci", "Yarasalar", "Zehir", "Şok", "İskeletler", "Mızrak Goblinleri", "Tesla", "Valküre"] },
+                    { arena: 12, cards: ["Madenci", "Yarasalar", "Zehir", "Şok", "İskeletler", "Mızrak Goblinleri", "Tesla", "Elektrik Büyücüsü"] }
+                ]
+            },
+            // Daha fazla varyasyon...
+            logBaitPrincess: {
+                name: "Prenses Kütük Tuzak",
+                description: "Prenses ile güçlendirilmiş Kütük Tuzak deck'i",
+                keyCards: ["Goblin Fıçısı", "Prenses", "Kütük", "Şok"],
+                averageElixir: 3.4,
+                difficulty: "medium",
+                strategy: "Prenses ile arkadan destek sağlayın. Goblin Fıçısı ile sürekli baskı yapın. Rakip Kütük kullandığında avantaj sağlayın.",
+                synergies: ["Goblin Fıçısı + Prenses", "Prenses + Kütük", "Goblin Fıçısı + Şok"],
+                decks: [
+                    { arena: 7, cards: ["Goblin Fıçısı", "Prenses", "Kütük", "Şok", "Goblinler", "Buz Ruhu", "Şövalye", "Cehennem Kulesi"] },
+                    { arena: 9, cards: ["Goblin Fıçısı", "Prenses", "Kütük", "Şok", "Goblinler", "Buz Ruhu", "Valküre", "Cehennem Kulesi"] },
+                    { arena: 11, cards: ["Goblin Fıçısı", "Prenses", "Kütük", "Şok", "Goblinler", "Buz Ruhu", "Elektrik Büyücüsü", "Cehennem Kulesi"] }
+                ]
+            },
+            bridgeSpamRamRider: {
+                name: "Köprü Koç Sürücüsü",
+                description: "Koç Sürücüsü ile hızlı baskı kuran köprü saldırı deck'i",
+                keyCards: ["Koç Sürücüsü", "Haydut", "Buz Ruhu", "Şok"],
+                averageElixir: 3.9,
+                difficulty: "hard",
+                strategy: "Koç Sürücüsü ile köprüden hızlıca geçin. Haydut ile destek sağlayın. Buz Ruhu ve Şok ile küçük birlikleri temizleyin.",
+                synergies: ["Koç Sürücüsü + Haydut", "Haydut + Buz Ruhu", "Koç Sürücüsü + Şok"],
+                decks: [
+                    { arena: 12, cards: ["Koç Sürücüsü", "Haydut", "Buz Ruhu", "Şok", "İskeletler", "Mızrak Goblinleri", "Ateş Topu", "Şövalye"] },
+                    { arena: 13, cards: ["Koç Sürücüsü", "Haydut", "Buz Ruhu", "Şok", "İskeletler", "Mızrak Goblinleri", "Kütük", "Valküre"] },
+                    { arena: 14, cards: ["Koç Sürücüsü", "Haydut", "Buz Ruhu", "Şok", "İskeletler", "Mızrak Goblinleri", "Kütük", "Elektrik Büyücüsü"] }
+                ]
+            },
+            xbowKnight: {
+                name: "X-Oku Şövalye",
+                description: "Şövalye ile savunması güçlendirilmiş X-Oku deck'i",
+                keyCards: ["X-Oku", "Şövalye", "Buz Ruhu", "Şok"],
+                averageElixir: 3.6,
+                difficulty: "medium",
+                strategy: "X-Oku'yu koruyarak yerleştirin. Şövalye ile hem X-Oku'yu koruyun hem de kara tehditlerini savunun.",
+                synergies: ["X-Oku + Şövalye", "Şövalye + Buz Ruhu", "X-Oku + Şok"],
+                decks: [
+                    { arena: 6, cards: ["X-Oku", "Şövalye", "Buz Ruhu", "Şok", "İskeletler", "Mızrak Goblinleri", "Kütük", "Top"] },
+                    { arena: 8, cards: ["X-Oku", "Şövalye", "Buz Ruhu", "Şok", "İskeletler", "Mızrak Goblinleri", "Dev Kar Topu", "Tesla"] },
+                    { arena: 10, cards: ["X-Oku", "Şövalye", "Buz Ruhu", "Şok", "İskeletler", "Mızrak Goblinleri", "Dev Kar Topu", "Elektrik Büyücüsü"] }
+                ]
+            },
+            giantWitch: {
+                name: "Dev Cadı",
+                description: "Cadı'nın iskeletleriyle desteklenen klasik Dev deck'i",
+                keyCards: ["Dev", "Cadı", "Minyonlar", "Ateş Topu"],
+                averageElixir: 4.1,
+                difficulty: "easy",
+                strategy: "Dev'i gönderin ve arkasına Cadı'yı yerleştirin. Çıkan iskeletler hem Dev'i korur hem de ek hasar verir.",
+                synergies: ["Dev + Cadı", "Cadı + Minyonlar", "Dev + Ateş Topu"],
+                decks: [
+                    { arena: 3, cards: ["Dev", "Cadı", "Minyonlar", "Ateş Topu", "İskeletler", "Şok", "Mızrak Goblinleri", "Şövalye"] },
+                    { arena: 5, cards: ["Dev", "Cadı", "Minyonlar", "Ateş Topu", "İskeletler", "Şok", "Mızrak Goblinleri", "Buz Ruhu"] },
+                    { arena: 7, cards: ["Dev", "Cadı", "Minyonlar", "Ateş Topu", "İskeletler", "Şok", "Mızrak Goblinleri", "Kasırga"] }
+                ]
+            },
+            lavaMiner: {
+                name: "Lava Madenci",
+                description: "Hava ve kara saldırısını birleştiren Lava-Madenci deck'i",
+                keyCards: ["Lava Köpeği", "Madenci", "Buz Ruhu", "Şok"],
+                averageElixir: 4.0,
+                difficulty: "hard",
+                strategy: "Lava Köpeği ile hava baskısı yaparken, Madenci ile kuleye sürekli hasar verin. Buz Ruhu ile destek sağlayın.",
+                synergies: ["Lava Köpeği + Madenci", "Madenci + Buz Ruhu", "Lava Köpeği + Şok"],
+                decks: [
+                    { arena: 7, cards: ["Lava Köpeği", "Madenci", "Buz Ruhu", "Şok", "İskeletler", "Mızrak Goblinleri", "Ateş Topu", "Tüfekçi"] },
+                    { arena: 9, cards: ["Lava Köpeği", "Madenci", "Buz Ruhu", "Şok", "İskeletler", "Mızrak Goblinleri", "Kütük", "Buz Büyücüsü"] },
+                    { arena: 11, cards: ["Lava Köpeği", "Madenci", "Buz Ruhu", "Şok", "İskeletler", "Mızrak Goblinleri", "Kütük", "Elektrik Büyücüsü"] }
+                ]
+            },
+            electroGiant: {
+                name: "Elektrik Devi",
+                description: "Elektrik Devi ile sürekli baskı kuran yeni nesil deck",
+                keyCards: ["Elektrik Devi", "Elektrik Büyücüsü", "Şok", "Buz Ruhu"],
+                averageElixir: 3.9,
+                difficulty: "medium",
+                strategy: "Elektrik Devi ile tank oluşturun. Elektrik Büyücüsü ile destek sağlayın. Şok ve Buz Ruhu ile küçük birlikleri temizleyin.",
+                synergies: ["Elektrik Devi + Elektrik Büyücüsü", "Elektrik Büyücüsü + Şok", "Elektrik Devi + Buz Ruhu"],
+                decks: [
+                    { arena: 12, cards: ["Elektrik Devi", "Elektrik Büyücüsü", "Şok", "Buz Ruhu", "İskeletler", "Mızrak Goblinleri", "Ateş Topu", "Tüfekçi"] },
+                    { arena: 13, cards: ["Elektrik Devi", "Elektrik Büyücüsü", "Şok", "Buz Ruhu", "İskeletler", "Mızrak Goblinleri", "Ateş Topu", "Buz Büyücüsü"] },
+                    { arena: 14, cards: ["Elektrik Devi", "Elektrik Büyücüsü", "Şok", "Buz Ruhu", "İskeletler", "Mızrak Goblinleri", "Ateş Topu", "Elektrik Büyücüsü"] }
+                ]
+            },
+            sparkyFreeze: {
+                name: "Sparkey Donma",
+                description: "Donma büyüsü ile rakibi felç eden Sparkey deck'i",
+                keyCards: ["Sparkey", "Donma", "Buz Golemi", "Şok"],
+                averageElixir: 4.1,
+                difficulty: "hard",
+                strategy: "Sparkey kuleye ulaştığında Donma büyüsü kullanarak savunmayı durdurun ve maksimum hasar alın. Buz Golemi ile koruma sağlayın.",
+                synergies: ["Sparkey + Donma", "Donma + Buz Golemi", "Sparkey + Şok"],
+                decks: [
+                    { arena: 6, cards: ["Sparkey", "Donma", "Buz Golemi", "Şok", "Yarasalar", "İskeletler", "Ateş Topu", "Tüfekçi"] },
+                    { arena: 8, cards: ["Sparkey", "Donma", "Buz Golemi", "Şok", "Yarasalar", "İskeletler", "Ateş Topu", "Buz Büyücüsü"] },
+                    { arena: 10, cards: ["Sparkey", "Donma", "Buz Golemi", "Şok", "Yarasalar", "İskeletler", "Ateş Topu", "Elektrik Büyücüsü"] }
+                ]
+            },
+            royalGiantCycle: {
+                name: "Kraliyet Devi Cycle",
+                description: "Düşük elixir kartlarla döngü kuran Kraliyet Devi deck'i",
+                keyCards: ["Kraliyet Devi", "Şok", "Buz Ruhu", "İskeletler"],
+                averageElixir: 3.7,
+                difficulty: "medium",
+                strategy: "Kraliyet Devi ile sürekli baskı kurun. Düşük elixir kartlarla savunma yaparak elixir avantajı sağlayın.",
+                synergies: ["Kraliyet Devi + Şok", "Şok + Buz Ruhu", "Kraliyet Devi + İskeletler"],
+                decks: [
+                    { arena: 7, cards: ["Kraliyet Devi", "Şok", "Buz Ruhu", "İskeletler", "Mızrak Goblinleri", "Top", "Tesla", "Şövalye"] },
+                    { arena: 9, cards: ["Kraliyet Devi", "Şok", "Buz Ruhu", "İskeletler", "Mızrak Goblinleri", "Kütük", "Tesla", "Valküre"] },
+                    { arena: 11, cards: ["Kraliyet Devi", "Şok", "Buz Ruhu", "İskeletler", "Mızrak Goblinleri", "Kütük", "Tesla", "Elektrik Büyücüsü"] }
+                ]
+            },
+            mortarKnight: {
+                name: "Havan Şövalye",
+                description: "Şövalye ile savunması güçlendirilmiş Havan deck'i",
+                keyCards: ["Havan", "Şövalye", "Buz Ruhu", "Şok"],
+                averageElixir: 3.5,
+                difficulty: "medium",
+                strategy: "Havan'ı koruyarak yerleştirin. Şövalye ile hem Havan'ı koruyun hem de kara tehditlerini savunun.",
+                synergies: ["Havan + Şövalye", "Şövalye + Buz Ruhu", "Havan + Şok"],
+                decks: [
+                    { arena: 6, cards: ["Havan", "Şövalye", "Buz Ruhu", "Şok", "İskeletler", "Mızrak Goblinleri", "Kütük", "Top"] },
+                    { arena: 8, cards: ["Havan", "Şövalye", "Buz Ruhu", "Şok", "İskeletler", "Mızrak Goblinleri", "Dev Kar Topu", "Tesla"] },
+                    { arena: 10, cards: ["Havan", "Şövalye", "Buz Ruhu", "Şok", "İskeletler", "Mızrak Goblinleri", "Dev Kar Topu", "Elektrik Büyücüsü"] }
+                ]
+            },
+            // Başlangıç dostu deck'ler
+            giantWizard: {
+                name: "Dev Büyücü",
+                description: "Yeni başlayanlar için ideal, güçlü ve basit deck",
+                keyCards: ["Dev", "Büyücü", "Minyonlar", "Ateş Topu"],
+                averageElixir: 4.1,
+                difficulty: "easy",
+                strategy: "Dev'i gönderin ve arkasına Büyücüyü yerleştirin. Büyücünün alan hasarı ve Minyonlar ile hava savunması yapın.",
+                synergies: ["Dev + Büyücü", "Büyücü + Minyonlar", "Dev + Ateş Topu"],
+                decks: [
+                    { arena: 1, cards: ["Dev", "Büyücü", "Minyonlar", "Ateş Topu", "İskeletler", "Şok", "Mızrak Goblinleri", "Şövalye"] },
+                    { arena: 3, cards: ["Dev", "Büyücü", "Minyonlar", "Ateş Topu", "İskeletler", "Şok", "Mızrak Goblinleri", "Buz Ruhu"] },
+                    { arena: 5, cards: ["Dev", "Büyücü", "Minyonlar", "Ateş Topu", "İskeletler", "Şok", "Mızrak Goblinleri", "Kasırga"] }
+                ]
+            },
+            musketeerBait: {
+                name: "Tüfekçi Tuzak",
+                description: "Tüfekçi'yi koruyarak oynanan kontrol deck'i",
+                keyCards: ["Tüfekçi", "Şövalye", "Minyonlar", "Ateş Topu"],
+                averageElixir: 3.9,
+                difficulty: "easy",
+                strategy: "Tüfekçi'yi koruyarak hava savunması yapın. Şövalye ile tankları durdurun. Minyonlar ile ek destek sağlayın.",
+                synergies: ["Tüfekçi + Şövalye", "Şövalye + Minyonlar", "Tüfekçi + Ateş Topu"],
+                decks: [
+                    { arena: 1, cards: ["Tüfekçi", "Şövalye", "Minyonlar", "Ateş Topu", "İskeletler", "Şok", "Mızrak Goblinleri", "Top"] },
+                    { arena: 3, cards: ["Tüfekçi", "Şövalye", "Minyonlar", "Ateş Topu", "İskeletler", "Şok", "Mızrak Goblinleri", "Tesla"] },
+                    { arena: 5, cards: ["Tüfekçi", "Şövalye", "Minyonlar", "Ateş Topu", "İskeletler", "Şok", "Mızrak Goblinleri", "Valküre"] }
+                ]
+            }
+        };
+
+        // Global değişkenler
+        let selectedArena = null;
+        let selectedCards = [];
+        let generatedDecks = [];
+
+        // DOM elementleri
+        const arenaGrid = document.getElementById('arenaGrid');
+        const cardGrid = document.getElementById('cardGrid');
+        const generateBtn = document.getElementById('generateBtn');
+        const generateAllBtn = document.getElementById('generateAllBtn');
+        const resultsContainer = document.getElementById('resultsContainer');
+        const notification = document.getElementById('notification');
+        const cardCounter = document.getElementById('cardCounter');
+
+        // Başlangıç fonksiyonu
+        function init() {
+            renderArenas();
+            renderCards();
+            setupEventListeners();
+        }
+
+        // Arenaları render et
+        function renderArenas() {
+            arenaGrid.innerHTML = '';
+            const sortedArenas = [...arenas].sort((a, b) => a.trophies - b.trophies);
+            
+            sortedArenas.forEach(arena => {
+                const arenaBtn = document.createElement('div');
+                arenaBtn.className = 'arena-btn';
+                arenaBtn.innerHTML = `
+                    <div class="arena-name">${arena.name}</div>
+                    <div class="arena-trophies">🏆 ${arena.trophies}</div>
+                `;
+                arenaBtn.dataset.arenaId = arena.id;
+                arenaBtn.addEventListener('click', selectArena);
+                arenaGrid.appendChild(arenaBtn);
+            });
+        }
+
+        // Kartları render et
+        function renderCards() {
+            cardGrid.innerHTML = '';
+            cards.forEach(card => {
+                const cardContainer = document.createElement('div');
+                cardContainer.innerHTML = `
+                    <input type="checkbox" id="card-${card.id}" class="card-checkbox" data-card-id="${card.id}">
+                    <label for="card-${card.id}" class="card-label">
+                        <div class="rarity-indicator rarity-${card.rarity}"></div>
+                        <img src="https://cdn.royaleapi.com/static/img/cards/${card.image}.png" 
+                             alt="${card.name}" 
+                             class="card-image"
+                             onerror="this.src='https://dummyimage.com/50x70/4a5568/ffffff&text=${card.cost}'">
+                        <div class="card-name">${card.name}</div>
+                        <div class="card-cost">${card.cost}</div>
+                    </label>
+                `;
+                cardGrid.appendChild(cardContainer);
+            });
+        }
+
+        // Event listener'ları ayarla
+        function setupEventListeners() {
+            generateBtn.addEventListener('click', generateDecks);
+            generateAllBtn.addEventListener('click', generateAllDecks);
+            
+            cardGrid.addEventListener('change', (e) => {
+                if (e.target.classList.contains('card-checkbox')) {
+                    const cardId = parseInt(e.target.dataset.cardId);
+                    const card = cards.find(c => c.id === cardId);
+                    
+                    if (e.target.checked) {
+                        selectedCards.push(card);
+                    } else {
+                        selectedCards = selectedCards.filter(c => c.id !== cardId);
+                    }
+                    
+                    updateCardCounter();
+                    checkGenerateButtonState();
+                }
+            });
+        }
+
+        // Kart sayacını güncelle
+        function updateCardCounter() {
+            cardCounter.textContent = `Seçilen kart: ${selectedCards.length}`;
+        }
+
+        // Arena seç
+        function selectArena(e) {
+            document.querySelectorAll('.arena-btn').forEach(btn => {
+                btn.classList.remove('selected');
+            });
+            
+            e.currentTarget.classList.add('selected');
+            selectedArena = arenas.find(a => a.id === parseInt(e.currentTarget.dataset.arenaId));
+            
+            filterCardsByArena();
+            checkGenerateButtonState();
+        }
+
+        // Arenaya göre kartları filtrele
+        function filterCardsByArena() {
+            if (!selectedArena) return;
+            
+            const cardCheckboxes = document.querySelectorAll('.card-checkbox');
+            cardCheckboxes.forEach(checkbox => {
+                const cardId = parseInt(checkbox.dataset.cardId);
+                const card = cards.find(c => c.id === cardId);
+                const cardLabel = checkbox.nextElementSibling;
+                
+                if (card.arena <= selectedArena.id) {
+                    checkbox.disabled = false;
+                    cardLabel.style.opacity = '1';
+                } else {
+                    checkbox.disabled = true;
+                    checkbox.checked = false;
+                    cardLabel.style.opacity = '0.4';
+                }
+            });
+            
+            selectedCards = [];
+            updateCardCounter();
+        }
+
+        // Generate buton durumunu kontrol et
+        function checkGenerateButtonState() {
+            if (selectedArena) {
+                generateAllBtn.disabled = false;
+                if (selectedCards.length >= 8) {
+                    generateBtn.disabled = false;
+                } else {
+                    generateBtn.disabled = true;
+                }
+            } else {
+                generateBtn.disabled = true;
+                generateAllBtn.disabled = true;
+            }
+        }
+
+        // Desteleri oluştur (kart seçimi ile)
+        function generateDecks() {
+            if (!selectedArena || selectedCards.length < 8) {
+                showNotification('Lütfen bir arena seçin ve en az 8 kart işaretleyin!', 'error');
+                return;
+            }
+            
+            const userCardIds = selectedCards.map(card => card.id);
+            generatedDecks = findSuitableDecks(selectedArena.id, userCardIds);
+            
+            displayResults();
+            showNotification(`${generatedDecks.length} adet uygun deck bulundu!`, 'success');
+        }
+
+        // Tüm desteleri göster
+        function generateAllDecks() {
+            if (!selectedArena) {
+                showNotification('Lütfen bir arena seçin!', 'error');
+                return;
+            }
+            
+            generatedDecks = getAllDecksForArena(selectedArena.id);
+            displayResults();
+            showNotification(`${generatedDecks.length} adet meta deck gösteriliyor!`, 'success');
+        }
+
+        // Uygun desteleri bul
+        function findSuitableDecks(arenaId, userCardIds) {
+            const suitableDecks = [];
+            
+            Object.values(metaDecks).forEach(metaDeck => {
+                metaDeck.decks.forEach(deck => {
+                    // Deck'in tüm kartlarının seçilen arenada olup olmadığını kontrol et
+                    const allCardsAvailable = deck.cards.every(cardName => {
+                        const card = cards.find(c => c.name === cardName);
+                        return card && card.arena <= arenaId;
+                    });
+                    
+                    if (!allCardsAvailable) return; // Eğer bir kart yoksa bu deck'i atla
+                    
+                    const deckCardIds = deck.cards.map(cardName => {
+                        const card = cards.find(c => c.name === cardName);
+                        return card ? card.id : null;
+                    }).filter(id => id !== null);
+                    
+                    const matchingCards = deckCardIds.filter(id => userCardIds.includes(id));
+                    const matchPercentage = (matchingCards.length / deckCardIds.length) * 100;
+                    
+                    if (matchPercentage >= 60) {
+                        suitableDecks.push({
+                            ...metaDeck,
+                            cards: deck.cards,
+                            matchingCards: matchingCards.length,
+                            matchPercentage: matchPercentage,
+                            averageElixir: calculateAverageElixir(deck.cards),
+                            isMeta: true
+                        });
+                    }
+                });
+            });
+            
+            suitableDecks.sort((a, b) => b.matchPercentage - a.matchPercentage);
+            return suitableDecks.slice(0, 5);
+        }
+
+        // Arenadaki tüm desteleri al
+        function getAllDecksForArena(arenaId) {
+            const allDecks = [];
+            
+            Object.values(metaDecks).forEach(metaDeck => {
+                metaDeck.decks.forEach(deck => {
+                    // Deck'in tüm kartlarının seçilen arenada olup olmadığını kontrol et
+                    const allCardsAvailable = deck.cards.every(cardName => {
+                        const card = cards.find(c => c.name === cardName);
+                        return card && card.arena <= arenaId;
+                    });
+                    
+                    if (!allCardsAvailable) return; // Eğer bir kart yoksa bu deck'i atla
+
+                    allDecks.push({
+                        ...metaDeck,
+                        cards: deck.cards,
+                        matchingCards: 8,
+                        matchPercentage: 100,
+                        averageElixir: calculateAverageElixir(deck.cards),
+                        isMeta: true
+                    });
+                });
+            });
+            
+            return allDecks.sort(() => Math.random() - 0.5).slice(0, 10);
+        }
+
+        // Ortalama elixir hesapla
+        function calculateAverageElixir(cardNames) {
+            const totalCost = cardNames.reduce((sum, cardName) => {
+                const card = cards.find(c => c.name === cardName);
+                return sum + (card ? card.cost : 0);
+            }, 0);
+            
+            return (totalCost / cardNames.length).toFixed(1);
+        }
+
+        // Sonuçları göster
+        function displayResults() {
+            resultsContainer.innerHTML = '';
+            resultsContainer.classList.add('show');
+            
+            if (generatedDecks.length === 0) {
+                resultsContainer.innerHTML = `
+                    <div class="deck-card">
+                        <h2>😕 Deck Bulunamadı</h2>
+                        <p>Seçtiğiniz kriterlere uygun deck bulunamadı. Lütfen farklı seçenekleri deneyin veya daha az kart seçerek tekrar deneyin.</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            generatedDecks.forEach((deck, index) => {
+                const deckCard = document.createElement('div');
+                deckCard.className = 'deck-card';
+                
+                // Deck'in minimum arena gereksinini bul
+                const minArena = Math.min(...deck.cards.map(cardName => {
+                    const card = cards.find(c => c.name === cardName);
+                    return card ? card.arena : 14;
+                }));
+                
+                deckCard.innerHTML = `
+                    <div class="deck-header">
+                        <div class="deck-name">
+                            ${deck.name}
+                            <span class="meta-badge">META</span>
+                            <span class="arena-requirement">Arena ${minArena}+</span>
+                            <span class="deck-type-badge">${getDeckType(deck.name)}</span>
+                            <span class="difficulty-badge difficulty-${deck.difficulty}">${getDifficultyText(deck.difficulty)}</span>
+                        </div>
+                        <div class="deck-stats">
+                            <div class="stat-item">
+                                <span>⚡</span>
+                                <span>${deck.averageElixir}</span>
+                            </div>
+                            <div class="stat-item">
+                                <span>🎯</span>
+                                <span>${deck.matchPercentage.toFixed(0)}%</span>
+                            </div>
+                            <div class="stat-item">
+                                <span>🏆</span>
+                                <span class="win-rate">${getWinRate(deck.name)}%</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="deck-cards">
+                        ${deck.cards.map(cardName => {
+                            const card = cards.find(c => c.name === cardName);
+                            const isOwned = selectedCards.some(c => c.id === card.id);
+                            return `
+                                <div class="deck-card-item ${isOwned ? 'owned' : 'not-owned'}">
+                                    <img src="https://cdn.royaleapi.com/static/img/cards/${card.image}.png" 
+                                         alt="${card.name}" 
+                                         class="deck-card-image"
+                                         onerror="this.src='https://dummyimage.com/60x84/4a5568/ffffff&text=${card.cost}'">
+                                    <div class="deck-card-name">${card.name}</div>
+                                    <div class="deck-card-cost">${card.cost}</div>
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
+                    
+                    <div class="strategy-section">
+                        <div class="strategy-title">📋 Strateji</div>
+                        <div class="strategy-text">${deck.strategy}</div>
+                        
+                        <div class="strategy-title" style="margin-top: 15px;">🔗 Kart Sinerjileri</div>
+                        <div>
+                            ${deck.synergies.map(synergy => 
+                                `<span class="synergy-item">${synergy}</span>`
+                            ).join('')}
+                        </div>
+                    </div>
+                `;
+                
+                resultsContainer.appendChild(deckCard);
+            });
+        }
+
+        // Deck tipini belirle
+        function getDeckType(deckName) {
+            if (deckName.includes("Cycle")) return "Cycle";
+            if (deckName.includes("Beatdown")) return "Beatdown";
+            if (deckName.includes("Kontrol")) return "Kontrol";
+            if (deckName.includes("Tuzak")) return "Tuzak";
+            if (deckName.includes("Saldırı")) return "Saldırı";
+            if (deckName.includes("Kuşatma")) return "Kuşatma";
+            if (deckName.includes("Spam")) return "Spam";
+            if (deckName.includes("Madenci")) return "Madenci";
+            if (deckName.includes("Hog")) return "Hog";
+            if (deckName.includes("X-Oku")) return "X-Oku";
+            if (deckName.includes("Havan")) return "Havan";
+            if (deckName.includes("Lava")) return "Lava";
+            if (deckName.includes("Golem")) return "Golem";
+            if (deckName.includes("Dev")) return "Dev";
+            if (deckName.includes("Kraliyet")) return "Kraliyet";
+            if (deckName.includes("Mega")) return "Mega";
+            if (deckName.includes("Sparkey")) return "Sparkey";
+            if (deckName.includes("Üç")) return "Üç Tüfekçi";
+            if (deckName.includes("Elektrik")) return "Elektrik";
+            if (deckName.includes("Balıkçı")) return "Balıkçı";
+            if (deckName.includes("Anne")) return "Anne Cadı";
+            if (deckName.includes("Barbar")) return "Barbar";
+            if (deckName.includes("Roket")) return "Roket";
+            if (deckName.includes("Eliksir")) return "Eliksir";
+            return "Meta";
+        }
+
+        // Zorluk metnini belirle
+        function getDifficultyText(difficulty) {
+            switch(difficulty) {
+                case "easy": return "Kolay";
+                case "medium": return "Orta";
+                case "hard": return "Zor";
+                default: return "Orta";
+            }
+        }
+
+        // Kazanma oranını belirle
+        function getWinRate(deckName) {
+            if (deckName.includes("Madenci")) return Math.floor(Math.random() * 3) + 55;
+            if (deckName.includes("Hog")) return Math.floor(Math.random() * 3) + 53;
+            if (deckName.includes("Cycle")) return Math.floor(Math.random() * 5) + 52;
+            if (deckName.includes("Beatdown")) return Math.floor(Math.random() * 5) + 50;
+            if (deckName.includes("Kontrol")) return Math.floor(Math.random() * 5) + 51;
+            if (deckName.includes("Tuzak")) return Math.floor(Math.random() * 5) + 53;
+            if (deckName.includes("Saldırı")) return Math.floor(Math.random() * 5) + 49;
+            if (deckName.includes("X-Oku")) return Math.floor(Math.random() * 3) + 54;
+            if (deckName.includes("Havan")) return Math.floor(Math.random() * 3) + 52;
+            if (deckName.includes("Lava")) return Math.floor(Math.random() * 5) + 51;
+            if (deckName.includes("Golem")) return Math.floor(Math.random() * 5) + 50;
+            if (deckName.includes("Dev")) return Math.floor(Math.random() * 5) + 49;
+            if (deckName.includes("Mega")) return Math.floor(Math.random() * 5) + 51;
+            if (deckName.includes("Sparkey")) return Math.floor(Math.random() * 5) + 50;
+            if (deckName.includes("Üç")) return Math.floor(Math.random() * 5) + 49;
+            if (deckName.includes("Elektrik")) return Math.floor(Math.random() * 5) + 52;
+            return Math.floor(Math.random() * 5) + 50;
+        }
+
+        // Bildirim göster
+        function showNotification(message, type = 'info') {
+            notification.textContent = message;
+            notification.className = 'notification show';
+            
+            if (type === 'error') {
+                notification.style.background = 'rgba(244, 67, 54, 0.9)';
+            } else if (type === 'success') {
+                notification.style.background = 'rgba(76, 175, 80, 0.9)';
+            } else {
+                notification.style.background = 'rgba(33, 150, 243, 0.9)';
+            }
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+
+        // Sayfa yüklendiğinde başlat
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
